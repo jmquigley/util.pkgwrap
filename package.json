@@ -1,0 +1,69 @@
+{
+  "name": "util.pkgwrap",
+  "version": "0.0.0",
+  "author": "jmquigley <jmquigley@outlook.com>",
+  "description": "A script wrapper for package.json scripts.",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmquigley/util.pkgwrap"
+  },
+  "bugs": {
+    "url": "https://github.com/jmquigley/util.pkgwrap/issues"
+  },
+  "engines": {
+    "node": ">=7.4"
+  },
+  "dependencies": {
+    "expand-home-dir": "0.0.3",
+    "fs-extra": "^2.0.0",
+    "lodash": "^4.17.4",
+    "object-assign": "^4.1.1",
+    "util.rstrip": "0.0.3",
+    "uuid": "^3.0.1",
+    "yargs": "^6.5.0"
+  },
+  "devDependencies": {
+    "xo": "^0.17.1"
+  },
+  "bin": {
+    "pkgwrap": "./cli.js"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/xo"
+  },
+  "xo": {
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "global": [
+      "window",
+      "describe",
+      "it",
+      "JSON"
+    ],
+    "rules": {
+      "space-before-function-paren": "off",
+	    "no-multiple-empty-lines": [
+		    "error",
+		    {
+			    "max": 2,
+			    "maxEOF": 1
+		    }
+	    ],
+      "unicorn/filename-case": [
+        "error",
+        {
+          "case": "snakeCase"
+        }
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed"
+      ]
+    }
+  }
+}
