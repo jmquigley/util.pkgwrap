@@ -20,7 +20,6 @@ const ps = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
 const home = require('expand-home-dir');
-const rstrip = require('util.rstrip');
 
 let argv = require('yargs')
 	.usage('Usage: $0 <command>')
@@ -39,6 +38,10 @@ let tmp = home(path.join('~/', '.tmp', '.nyc_output'));
 let bin = './node_modules/.bin';
 if (!fs.existsSync(tmp)) {
 	fs.mkdirsSync(tmp);
+}
+
+function rstrip(s) {
+    return s.toString().replace(/\r\n$|\n$|\r$/, '');
 }
 
 function call(cmd) {
