@@ -41,7 +41,7 @@ if (!fs.existsSync(tmp)) {
 }
 
 function rstrip(s) {
-    return s.toString().replace(/\r\n$|\n$|\r$/, '');
+	return s.toString().replace(/\r\n$|\n$|\r$/, '');
 }
 
 function call(cmd) {
