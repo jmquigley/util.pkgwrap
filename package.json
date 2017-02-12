@@ -24,6 +24,14 @@
     "yargs": "^6.5.0",
     "xo": "^0.17.1"
   },
+  "devDependencies": {
+    "ava": "^0.18.1",
+    "coveralls": "^2.11.15",
+    "nyc": "^10.1.2",
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.6",
+    "xo": "^0.17.1"
+  },
   "bin": {
     "pkgwrap": "./cli.js"
   },

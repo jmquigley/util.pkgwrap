@@ -4,11 +4,17 @@
  * Commands that can be used by the package.json script to wrap more complex
  * operations.  Generally this would be called using:
  *
- *     node cmd.js {option}
+ *     node cli.js {option}
+ *
+ *     OR
+ *
+ *     pkgwrap {option}
  *
  * The single options would include:
  *
  * - postinstall
+ * - build
+ * - lint
  * - testing
  * - reporting
  * - coverage
@@ -24,6 +30,8 @@ const home = require('expand-home-dir');
 let argv = require('yargs')
 	.usage('Usage: $0 <command>')
 	.command('postinstall', 'Executed during the NPM post install')
+	.command('build', 'Executes the typescript build command')
+	.command('lint', 'Executes the lint tool to check for code errors')
 	.command('testing', 'Start the testing process for the module')
 	.command('reporting', 'Creates coverage reports after testing')
 	.command('coverage', 'Creates nyc report data used by coveralls')
@@ -62,14 +70,28 @@ function call(cmd) {
 	});
 }
 
+if (argv.build) {
+	call([
+		`tslint ./src/**/*.ts`,
+		'&&',
+		`${bin}/tsc`,
+		'-p',
+		'.'
+	].join(' '));
+}
+
 if (argv.testing) {
 	call([
-		`${bin}/xo`,
-		'&&',
 		`${bin}/nyc`,
 		`--temp-directory=${tmp}`,
 		`${bin}/ava`,
 		'--verbose'
+	].join(' '));
+}
+
+if (argv.lint) {
+	call([
+		`${bin}/xo`
 	].join(' '));
 }
 

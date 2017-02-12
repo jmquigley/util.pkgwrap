@@ -5,18 +5,22 @@
 This creates a command line program named `pkgwrap`.  It is used to just wrap command line operations used when launching scripts from NPM.  It wraps the following operations:
 
  - postinstall
+ - build
+ - lint
  - testing
  - reporting
  - coverage
 
-This implementation wraps the following packages:
+The wrapper simplifies the setting of command line parameters to the programs above.  e.g. dynamically setting the temporary directory for nyc output.
 
-- lint: [xo](https://www.npmjs.com/package/xo)
+
+This implementation is opinionated and wraps the following packages:
+
+- build: [typescript](https://www.typescriptlang.org/) and [tslint](https://palantir.github.io/tslint/)
+- js lint: [xo](https://www.npmjs.com/package/xo)
 - testing: [ava](https://www.npmjs.com/package/ava)
 - reporting: [nyc](https://www.npmjs.com/package/nyc)
 - coverage: [coveralls](https://www.npmjs.com/package/coveralls)
-
-The wrapper simplifies the setting of command line parameters to the programs above.  e.g. dynamically setting the temporary directory for nyc output.
 
 
 ## Installation
@@ -36,6 +40,8 @@ This is a command line package used with the `scripts` section of `pacakge.json`
 
     "scripts": {
         "postinstall": "pkgwrap --postinstall",
+	    "build": "pkgwrap --build",
+        "lint": "pkgwrap --lint",
         "test": "pkgwrap --testing",
         "report": "pkgwrap --reporting"
         "coverage": "pkgwrap --coverage"
@@ -44,6 +50,8 @@ This is a command line package used with the `scripts` section of `pacakge.json`
 ### Options
 
 - `--postinstall`: this is executed after `npm install`.  This can be used to create or fix permissions on directories.
-- `--testing`: calls lint and testing functions.
+- `--build`: calls the typescript lint and build process
+- `--lint`: call the xo code checking program
+- `--testing`: calls the ava testing program.
 - `--reporting`: runs nyc to create information that can be used in reporting testing coverage
 - `--coverage`: runs coveralls to upload report details after a successful build.
