@@ -88,7 +88,7 @@ if (argv.testing) {
 
 if (argv.lint) {
 	call([
-		`${bin}/tslint ./lib/*.js ./src/*.js index.js`
+		`${bin}/tslint ./lib/*.ts ./src/*.ts index.ts cli.ts`
 	].join(' '));
 }
 
