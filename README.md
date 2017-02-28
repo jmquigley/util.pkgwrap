@@ -16,9 +16,9 @@ The wrapper simplifies the setting of command line parameters to the programs ab
 
 This implementation is opinionated and wraps the following packages:
 
-- build: [typescript](https://www.typescriptlang.org/) and [tslint](https://palantir.github.io/tslint/)
-- js lint: [xo](https://www.npmjs.com/package/xo)
-- testing: [ava](https://www.npmjs.com/package/ava)
+- build: [typescript](https://www.typescriptlang.org/) 
+- lint: [tslint](https://palantir.github.io/tslint/)
+- testing: [mocha](https://mochajs.org/)
 - reporting: [nyc](https://www.npmjs.com/package/nyc)
 - coverage: [coveralls](https://www.npmjs.com/package/coveralls)
 
@@ -49,9 +49,9 @@ This is a command line package used with the `scripts` section of `pacakge.json`
 
 ### Options
 
-- `--postinstall`: this is executed after `npm install`.  This can be used to create or fix permissions on directories.
-- `--build`: calls the typescript lint and build process
-- `--lint`: call the xo code checking program
-- `--testing`: calls the ava testing program.
+- `--postinstall`: this is executed after `npm install`.  It is used to create directoris or fix their permissions.
+- `--build`: calls the typescript build process
+- `--lint`: calls the tslint code checking program
+- `--testing`: calls the mocha testing program.
 - `--reporting`: runs nyc to create information that can be used in reporting testing coverage
 - `--coverage`: runs coveralls to upload report details after a successful build.

@@ -13,62 +13,31 @@
     "url": "https://github.com/jmquigley/util.pkgwrap/issues"
   },
   "engines": {
-    "node": ">=7.4"
+    "node": ">=7.5"
   },
   "dependencies": {
+    "@types/fs-extra": "0.0.37",
+    "@types/lodash": "^4.14.53",
+    "@types/node": "^7.0.5",
+    "@types/object-assign": "^4.0.30",
+    "@types/uuid": "^2.0.29",
+    "@types/yargs": "^6.6.0",
     "expand-home-dir": "0.0.3",
     "fs-extra": "^2.0.0",
     "lodash": "^4.17.4",
     "object-assign": "^4.1.1",
     "uuid": "^3.0.1",
-    "yargs": "^6.5.0",
-    "xo": "^0.17.1"
+    "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "ava": "^0.18.1",
+    "@types/mocha": "^2.2.39",
     "coveralls": "^2.11.15",
+    "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "tslint": "^4.4.2",
-    "typescript": "^2.1.6",
-    "xo": "^0.17.1"
+    "typescript": "^2.1.6"
   },
   "bin": {
     "pkgwrap": "./cli.js"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/xo"
-  },
-  "xo": {
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": true
-    },
-    "global": [
-      "window",
-      "describe",
-      "it",
-      "JSON"
-    ],
-    "rules": {
-      "space-before-function-paren": "off",
-      "no-multiple-empty-lines": [
-        "error",
-        {
-          "max": 2,
-          "maxEOF": 1
-        }
-      ],
-      "unicorn/filename-case": [
-        "error",
-        {
-          "case": "snakeCase"
-        }
-      ],
-      "arrow-parens": [
-        "error",
-        "as-needed"
-      ]
-    }
   }
 }

@@ -72,8 +72,6 @@ function call(cmd) {
 
 if (argv.build) {
 	call([
-		`tslint ./src/**/*.ts`,
-		'&&',
 		`${bin}/tsc`,
 		'-p',
 		'.'
@@ -84,14 +82,13 @@ if (argv.testing) {
 	call([
 		`${bin}/nyc`,
 		`--temp-directory=${tmp}`,
-		`${bin}/ava`,
-		'--verbose'
+		`${bin}/mocha`
 	].join(' '));
 }
 
 if (argv.lint) {
 	call([
-		`${bin}/xo`
+		`${bin}/tslint ./lib/*.js ./src/*.js index.js`
 	].join(' '));
 }
 
