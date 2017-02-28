@@ -67,6 +67,7 @@ function call(cmd) {
 
 	out.on('close', code => {
 		console.log(`exit: ${code}`);
+		process.exit(code);
 	});
 }
 
