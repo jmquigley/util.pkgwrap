@@ -39,5 +39,13 @@
   },
   "bin": {
     "pkgwrap": "./cli.js"
+  },
+  "pkgwrap": {
+    "include": [
+      "testinclude"
+    ],
+    "exclude": [
+      "testexclude"
+    ]
   }
 }

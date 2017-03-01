@@ -26,6 +26,8 @@ const ps = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
 const home = require('expand-home-dir');
+const _ = require('lodash');
+const pkg = require(path.join(process.cwd(), 'package.json'));
 
 let argv = require('yargs')
 	.usage('Usage: $0 <command>')
@@ -88,16 +90,34 @@ if (argv.testing) {
 }
 
 if (argv.lint) {
-	let include = [
-		'./lib/*.ts',
-		'./src/*.ts',
-		'index.ts',
-		'cli.ts'
-	].join(' ');
+	let files = {
+		include: [
+			'./lib/**/*.ts',
+			'./src/**/*.ts',
+			'./test/**/*.ts',
+			'test[s].ts',
+			'index.ts',
+			'cli.ts'
+		],
+		exclude: [
+			'./**/*.d.ts'
+		]
+	};
 
-	let exclude = [
-		'--exclude=./**/*.d.ts'
-	].join(' ');
+	if (pkg.hasOwnProperty('pkgwrap')) {
+		if (pkg.pkgwrap.hasOwnProperty('include') && pkg.pkgwrap.include instanceof Array) {
+			files.include = _.union(files.include, pkg.pkgwrap.include);
+		}
+
+		if (pkg.pkgwrap.hasOwnProperty('exclude') && pkg.pkgwrap.exclude instanceof Array) {
+			files.exclude = _.union(files.exclude, pkg.pkgwrap.exclude);
+		}
+	}
+
+	let include = files.include.join(' ');
+	let exclude = files.exclude.map((val) => {
+		return `--exclude=${val}`;
+	}).join(' ');
 
 	call([
 		`${bin}/tslint ${include} ${exclude}`
