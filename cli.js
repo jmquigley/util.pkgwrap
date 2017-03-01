@@ -88,8 +88,19 @@ if (argv.testing) {
 }
 
 if (argv.lint) {
+	let include = [
+		'./lib/*.ts',
+		'./src/*.ts',
+		'index.ts',
+		'cli.ts'
+	].join(' ');
+
+	let exclude = [
+		'--exclude=./**/*.d.ts'
+	].join(' ');
+
 	call([
-		`${bin}/tslint ./lib/*.ts ./src/*.ts index.ts cli.ts`
+		`${bin}/tslint ${include} ${exclude}`
 	].join(' '));
 }
 
