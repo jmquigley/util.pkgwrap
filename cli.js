@@ -64,7 +64,7 @@ function call(cmd) {
 	});
 
 	out.stderr.on('data', data => {
-		console.log(rstrip(data));
+		console.error(rstrip(data));
 	});
 
 	out.on('close', code => {
