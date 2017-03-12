@@ -128,7 +128,7 @@ if (argv.lint) {
 
 if (argv.reporting) {
 	call([
-		path.resolv(`${bin}/nyc`),
+		path.resolve(`${bin}/nyc`),
 		'report',
 		`--temp-directory=${tmp}`,
 		'--reporter=html'
