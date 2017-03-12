@@ -75,7 +75,7 @@ function call(cmd) {
 
 if (argv.build) {
 	call([
-		`${bin}/tsc`,
+		path.resolve(`${bin}/tsc`),
 		'-p',
 		'.'
 	].join(' '));
@@ -83,7 +83,7 @@ if (argv.build) {
 
 if (argv.testing) {
 	call([
-		`${bin}/nyc`,
+		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
 		`${bin}/mocha`
 	].join(' '));
@@ -120,13 +120,15 @@ if (argv.lint) {
 	}).join(' ');
 
 	call([
-		`${bin}/tslint ${include} ${exclude}`
+		path.resolve(`${bin}/tslint`),
+		include,
+	    exclude
 	].join(' '));
 }
 
 if (argv.reporting) {
 	call([
-		`${bin}/nyc`,
+		path.resolv(`${bin}/nyc`),
 		'report',
 		`--temp-directory=${tmp}`,
 		'--reporter=html'
@@ -135,7 +137,7 @@ if (argv.reporting) {
 
 if (argv.coverage) {
 	call([
-		`${bin}/nyc`,
+		path.resolve(`${bin}/nyc`),
 		'report',
 		`--temp-directory=${tmp}`,
 		'--reporter=text-lcov',
