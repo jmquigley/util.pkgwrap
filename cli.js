@@ -85,7 +85,8 @@ if (argv.testing) {
 	call([
 		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
-		`${bin}/mocha`
+		`${bin}/mocha`,
+		'--require intelli-espower-loader'
 	].join(' '));
 }
 
