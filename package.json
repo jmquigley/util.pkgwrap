@@ -16,23 +16,21 @@
     "node": ">=7.5"
   },
   "dependencies": {
-    "@types/fs-extra": "0.0.37",
-    "@types/lodash": "^4.14.53",
-    "@types/node": "^7.0.5",
-    "@types/uuid": "^2.0.29",
-    "@types/yargs": "^6.6.0",
     "expand-home-dir": "0.0.3",
     "fs-extra": "^2.0.0",
     "lodash": "^4.17.4",
-    "power-assert": "^1.4.2",
-    "uuid": "^3.0.1",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "0.0.37",
+    "@types/lodash": "^4.14.53",
     "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "@types/yargs": "^6.6.0",
     "coveralls": "^2.11.15",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
+    "power-assert": "^1.4.2",
     "tslint": "^4.4.2",
     "typescript": "^2.1.6"
   },
