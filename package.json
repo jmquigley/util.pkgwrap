@@ -16,7 +16,7 @@
     "node": ">=7.5"
   },
   "dependencies": {
-    "expand-home-dir": "0.0.3",
+    "expand-home-dir": "github:jmquigley/expand-home-dir",
     "fs-extra": "^2.0.0",
     "lodash": "^4.17.4",
     "yargs": "^6.5.0"
