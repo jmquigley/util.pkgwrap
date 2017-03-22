@@ -96,7 +96,7 @@ if (argv.lint) {
 			'./lib/**/*.ts',
 			'./src/**/*.ts',
 			'./test/**/*.ts',
-			'test[s].ts',
+			'test*.ts',
 			'index.ts',
 			'cli.ts'
 		],
