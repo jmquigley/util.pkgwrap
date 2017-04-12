@@ -17,22 +17,19 @@
   },
   "dependencies": {
     "expand-home-dir": "github:jmquigley/expand-home-dir",
-    "fs-extra": "^2.0.0",
+    "fs-extra": "^2.1.2",
     "lodash": "^4.17.4",
-    "yargs": "^6.5.0"
+    "yargs": "^7.0.2"
   },
   "devDependencies": {
-    "@types/fs-extra": "0.0.37",
-    "@types/lodash": "^4.14.53",
-    "@types/mocha": "^2.2.39",
-    "@types/node": "^7.0.5",
+    "@types/fs-extra": "2.0.0",
+    "@types/lodash": "^4.14.62",
+    "@types/node": "^7.0.12",
     "@types/yargs": "^6.6.0",
-    "coveralls": "^2.11.15",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
-    "power-assert": "^1.4.2",
-    "tslint": "^4.4.2",
-    "typescript": "^2.1.6"
+    "coveralls": "^2.13.0",
+    "nyc": "^10.2.0",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2"
   },
   "bin": {
     "pkgwrap": "./cli.js"
