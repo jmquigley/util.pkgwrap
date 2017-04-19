@@ -117,7 +117,7 @@ if (argv.lint) {
 
 	let include = files.include.map((val) => {
 		return `"${val}"`;
-	}).include.join(' ');
+	}).join(' ');
 
 	let exclude = files.exclude.map((val) => {
 		return `--exclude="${val}"`;
