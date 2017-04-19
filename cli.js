@@ -115,7 +115,7 @@ if (argv.lint) {
 		}
 	}
 
-	let include = files.map((val) => {
+	let include = files.include.map((val) => {
 		return `"${val}"`;
 	}).include.join(' ');
 
