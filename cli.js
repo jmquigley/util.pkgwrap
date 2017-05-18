@@ -28,6 +28,7 @@ const fs = require('fs-extra');
 const walk = require('klaw-sync');
 const _ = require('lodash');
 const path = require('path');
+const rimraf = require('rimraf');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
@@ -134,11 +135,17 @@ if (argv.build) {
 
 		files.forEach(file => {
 			console.log(` - ${file.path}`);
+
+			let dst = file.path.slice(0, -1);
+			if (fs.existsSync(dst)) {
+				rimraf.sync(dst);
+			}
 			call([
 				'babel',
 				file.path,
 				'-o',
-				file.path.slice(0, -1)
+				dst,
+				'--source-maps inline'
 			].join(' '), true);
 		});
     }
