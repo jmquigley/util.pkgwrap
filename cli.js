@@ -62,8 +62,10 @@ function rstrip(s) {
 	return s.toString().replace(/\r\n$|\n$|\r$/, '');
 }
 
-function call(cmd) {
-	console.log(cmd);
+function call(cmd, quiet = false) {
+	if (!quiet) {
+		console.log(cmd);
+	}
 	let out = ps.exec(cmd);
 
 	out.stdout.on('data', data => {
@@ -106,7 +108,7 @@ if (argv.build) {
 
 		const filterFn = (item) => {
 			if (ignoreList.every(it => {
-				return (item.path.indexOf(it) > -1) ? true : false;
+				return (item.path.indexOf(it) > -1) ? false : true;
 			})) return false;
 
 			if (path.extname(item.path) !== '.jsx') {
@@ -120,13 +122,19 @@ if (argv.build) {
 			filter: filterFn
 		});
 
+
+		if (files.length > 0) {
+			console.log('Compiling JSX Files:');
+		}
+
 		files.forEach(file => {
+			console.log(` - ${file.path}`);
 			call([
 				'babel',
 				file.path,
 				'-o',
 				file.path.slice(0, -1)
-			].join(' '));
+			].join(' '), true);
 		});
     }
 }
