@@ -16,9 +16,9 @@ The wrapper simplifies the setting of command line parameters to the programs ab
 
 This implementation is opinionated and wraps the following packages:
 
-- build: [typescript](https://www.typescriptlang.org/)
+- build: [typescript](https://www.typescriptlang.org/) and [babel](https://babeljs.io/) (if --jsx used)
 - lint: [tslint](https://palantir.github.io/tslint/)
-- testing: [mocha](https://mochajs.org/) or [ava](https://github.com/avajs/ava)
+- testing: [mocha](https://mochajs.org/) or [ava](https://github.com/avajs/ava) (if --ava used)
 - reporting: [nyc](https://www.npmjs.com/package/nyc)
 - coverage: [coveralls](https://www.npmjs.com/package/coveralls)
 
@@ -35,14 +35,14 @@ This is a command line package used with the `scripts` section of `package.json`
 
     "scripts": {
         "postinstall": "pkgwrap --postinstall",
-	    "build": "pkgwrap --build",
+	    "build": "pkgwrap --build --jsx",
         "lint": "pkgwrap --lint",
-        "test": "pkgwrap --testing",
+        "test": "pkgwrap --testing --ava",
         "report": "pkgwrap --reporting"
         "coverage": "pkgwrap --coverage"
     }
 
-### Options
+#### Commands
 
 - `--postinstall`: this is executed after `npm install`.  It is used to create directoris or fix their permissions.
 - `--build`: calls the typescript build process
@@ -51,11 +51,16 @@ This is a command line package used with the `scripts` section of `package.json`
 - `--reporting`: runs nyc to create information that can be used in reporting testing coverage
 - `--coverage`: runs coveralls to upload report details after a successful build.
 
+#### Options
 
-### Dependencies
+- `--ava`: Used with the `--testing` command to use the ava test runner.
+- `--jsx`: Used with the `--build` command to search for `.jsx` files and use babel to transpile them.
+
+#### Dependencies
 The following development dependencies must be included within the `package.json` file of the project that uses this cli:
 
 - [ava](https://github.com/avajs/ava)
+- [babel](https://babeljs.io/)
 - [coveralls](https://www.npmjs.com/package/coveralls)
 - [gulp](https://www.npmjs.com/package/gulp)
 - [gulp-cli](https://www.npmjs.com/package/gulp-cli)

@@ -23,21 +23,29 @@
 'use strict';
 
 const ps = require('child_process');
-const path = require('path');
-const fs = require('fs-extra');
 const home = require('expand-home-dir');
+const fs = require('fs-extra');
+const walk = require('klaw-sync');
 const _ = require('lodash');
+const path = require('path');
+
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
 let argv = require('yargs')
-	.usage('Usage: $0 <command>')
+	.usage('Usage: $0 <command> [--ava --jsx]')
 	.command('postinstall', 'Executed during the NPM post install')
 	.command('build', 'Executes the typescript build command')
 	.command('lint', 'Executes the lint tool to check for code errors')
 	.command('testing', 'Start the testing process for the module')
 	.command('reporting', 'Creates coverage reports after testing')
 	.command('coverage', 'Creates nyc report data used by coveralls')
+	.describe('ava', 'Used with --testing to use the ava test runner')
+	.default('ava', false)
+	.describe('jsx', 'used with --build to use babel to build JSX files')
+	.default('ava', false)
+	.version()
 	.help()
+	.showHelpOnFail(false, 'Specify --help for available options')
 	.argv;
 
 // This is used to setup a temporary directory that the user has
@@ -79,6 +87,48 @@ if (argv.build) {
 		'-p',
 		'.'
 	].join(' '));
+
+	// This option will search for JSX files within the project directory and
+	// call babel to transpile them.  This assumes that babel is avaialable
+	// and is configured.
+	if (argv.jsx) {
+		console.log(`Searching for JSX files in '${process.cwd()}'`);
+
+		let ignoreList = [
+			'.git',
+			'build',
+			'coverage',
+			'.nyc_output',
+			'dist',
+			'node_modules',
+			'package'
+		];
+
+		const filterFn = (item) => {
+			if (ignoreList.every(it => {
+				return (item.path.indexOf(it) > -1) ? true : false;
+			})) return false;
+
+			if (path.extname(item.path) !== '.jsx') {
+				return false;
+			}
+
+			return true;
+		};
+
+		const files = walk(process.cwd(), {
+			filter: filterFn
+		});
+
+		files.forEach(file => {
+			call([
+				'babel',
+				file.path,
+				'-o',
+				file.path.slice(0, -1)
+			].join(' '));
+		});
+    }
 }
 
 if (argv.testing) {
@@ -86,7 +136,8 @@ if (argv.testing) {
 		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
 		(argv.ava) ? `${bin}/ava` : `${bin}/mocha`,
-		(argv.ava) ? '--verbose' : '--require intelli-espower-loader'
+		(argv.ava) ? '--verbose' : '--require intelli-espower-loader',
+		'--harmony-proxies'
 	].join(' '));
 }
 

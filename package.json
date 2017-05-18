@@ -18,6 +18,7 @@
   "dependencies": {
     "expand-home-dir": "github:jmquigley/expand-home-dir",
     "fs-extra": "^3.0.1",
+    "klaw-sync": "^2.1.0",
     "lodash": "^4.17.4",
     "yargs": "^8.0.1"
   },
