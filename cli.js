@@ -28,7 +28,6 @@ const fs = require('fs-extra');
 const walk = require('klaw-sync');
 const _ = require('lodash');
 const path = require('path');
-const rimraf = require('rimraf');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
@@ -67,21 +66,13 @@ function call(cmd, quiet = false) {
 	if (!quiet) {
 		console.log(cmd);
 	}
-	let out = ps.exec(cmd);
 
-	out.stdout.on('data', data => {
-		console.log(rstrip(data));
-		return out;
-	});
-
-	out.stderr.on('data', data => {
-		console.error(rstrip(data));
-	});
-
-	out.on('close', code => {
-		console.log(`exit: ${code}`);
-		process.exit(code);
-	});
+	try {
+		ps.execSync(cmd, {stdio:[0,1,2]});
+	} catch (err) {
+		console.error(err.message);
+		process.exit(127);
+	}
 }
 
 if (argv.build) {
@@ -138,7 +129,7 @@ if (argv.build) {
 
 			let dst = file.path.slice(0, -1);
 			if (fs.existsSync(dst)) {
-				rimraf.sync(dst);
+				fs.removeSync(dst);
 			}
 			call([
 				'babel',
