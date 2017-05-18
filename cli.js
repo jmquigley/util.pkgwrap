@@ -107,9 +107,14 @@ if (argv.build) {
 		];
 
 		const filterFn = (item) => {
-			if (ignoreList.every(it => {
-				return (item.path.indexOf(it) > -1) ? false : true;
-			})) return false;
+
+			// Check the path against the ignore list.  If the path contains any element of the
+			// ignore list, then fail the filter (exclude it with false return)
+			for (let i=0; i<ignoreList.length; i++) {
+				if (item.path.indexOf(ignoreList[i]) > -1) {
+					return false;
+				}
+			}
 
 			if (path.extname(item.path) !== '.jsx') {
 				return false;
