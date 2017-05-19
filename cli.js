@@ -135,7 +135,7 @@ if (argv.clean) {
 		'coverage',
 		'.nyc_output',
 		'.DS_Store'
-	]);
+	].join(' '));
 
 	cleanupJSXFilles(getJSXFiles(process.cwd()));
 }
