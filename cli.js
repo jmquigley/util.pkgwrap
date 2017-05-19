@@ -147,9 +147,7 @@ if (argv.build) {
 		cleanupJSXFilles(files);
 
 		if (argv.webpack) {
-			call([
-				'webpack'
-			]);
+			call('webpack');
 		}
 
 		if (files.length > 0) {
