@@ -129,7 +129,7 @@ function cleanupJSXFilles(files) {
 
 if (argv.clean) {
 	call([
-		'rimraf',
+		'node_modules/util.pkgwrap/.bin/rimraf',
 		'dist',
 		'build',
 		'coverage',
