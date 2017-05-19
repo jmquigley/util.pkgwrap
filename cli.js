@@ -45,6 +45,8 @@ let argv = require('yargs')
 	.default('jsx', false)
 	.describe('jsxtest', 'used with --build to use bable to build JSX files in the test directory')
 	.default('jsxtest', false)
+	.describe('webpack', 'used with --build to start a webpack build of the current soruce')
+	.default('webpack', false)
 	.version()
 	.help()
 	.showHelpOnFail(false, 'Specify --help for available options')
@@ -77,6 +79,52 @@ function call(cmd, quiet = false) {
 	}
 }
 
+function getJSXFiles(baseDir) {
+	console.log(`Searching for JSX files in '${baseDir}'`);
+
+	let ignoreList = [
+		'.git',
+		'build',
+		'coverage',
+		'.nyc_output',
+		'dist',
+		'node_modules',
+		'package'
+	];
+
+	const filterFn = (item) => {
+
+		// Check the path against the ignore list.  If the path contains any element of the
+		// ignore list, then fail the filter (exclude it with false return)
+		for (let i=0; i<ignoreList.length; i++) {
+			if (item.path.indexOf(ignoreList[i]) > -1) {
+				return false;
+			}
+		}
+
+		if (path.extname(item.path) !== '.jsx') {
+			return false;
+		}
+
+		return true;
+	};
+
+	const files = walk(baseDir, {
+		filter: filterFn
+	});
+
+	return files;
+}
+
+function cleanupJSXFilles(files) {
+	files.forEach(file => {
+		let dst = file.path.slice(0, -1);
+		if (fs.existsSync(dst)) {
+			fs.removeSync(dst);
+		}
+	});
+}
+
 if (argv.build) {
 	call([
 		path.resolve(`${bin}/tsc`),
@@ -95,39 +143,14 @@ if (argv.build) {
 			baseDir = path.join(baseDir, 'test')
 		}
 
-		console.log(`Searching for JSX files in '${baseDir}'`);
+		let files = getJSXFiles(baseDir);
+		cleanupJSXFilles(files);
 
-		let ignoreList = [
-			'.git',
-			'build',
-			'coverage',
-			'.nyc_output',
-			'dist',
-			'node_modules',
-			'package'
-		];
-
-		const filterFn = (item) => {
-
-			// Check the path against the ignore list.  If the path contains any element of the
-			// ignore list, then fail the filter (exclude it with false return)
-			for (let i=0; i<ignoreList.length; i++) {
-				if (item.path.indexOf(ignoreList[i]) > -1) {
-					return false;
-				}
-			}
-
-			if (path.extname(item.path) !== '.jsx') {
-				return false;
-			}
-
-			return true;
-		};
-
-		const files = walk(baseDir, {
-			filter: filterFn
-		});
-
+		if (argv.webpack) {
+			call([
+				'webpack'
+			]);
+		}
 
 		if (files.length > 0) {
 			console.log('Compiling JSX Files:');
@@ -135,16 +158,11 @@ if (argv.build) {
 
 		files.forEach(file => {
 			console.log(` - ${file.path}`);
-
-			let dst = file.path.slice(0, -1);
-			if (fs.existsSync(dst)) {
-				fs.removeSync(dst);
-			}
 			call([
 				'babel',
 				file.path,
 				'-o',
-				dst,
+				file.path.slice(0, -1),
 				'--source-maps inline'
 			].join(' '), true);
 		});
