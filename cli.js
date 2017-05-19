@@ -42,7 +42,9 @@ let argv = require('yargs')
 	.describe('ava', 'Used with --testing to use the ava test runner')
 	.default('ava', false)
 	.describe('jsx', 'used with --build to use babel to build JSX files')
-	.default('ava', false)
+	.default('jsx', false)
+	.describe('jsxtest', 'used with --build to use bable to build JSX files in the test directory')
+	.default('jsxtest', false)
 	.version()
 	.help()
 	.showHelpOnFail(false, 'Specify --help for available options')
@@ -83,10 +85,17 @@ if (argv.build) {
 	].join(' '));
 
 	// This option will search for JSX files within the project directory and
-	// call babel to transpile them.  This assumes that babel is avaialable
-	// and is configured.
-	if (argv.jsx) {
-		console.log(`Searching for JSX files in '${process.cwd()}'`);
+	// call babel to transpile them.  This assumes that babel is available
+	// and is configured.  The "jsxtest" version will only look in the test
+	// directory for files.
+	if (argv.jsx || argv.jsxtest) {
+
+		let baseDir = process.cwd();
+		if (argv.jsxtest) {
+			baseDir = path.join(baseDir, 'test')
+		}
+
+		console.log(`Searching for JSX files in '${baseDir}'`);
 
 		let ignoreList = [
 			'.git',
@@ -115,7 +124,7 @@ if (argv.build) {
 			return true;
 		};
 
-		const files = walk(process.cwd(), {
+		const files = walk(baseDir, {
 			filter: filterFn
 		});
 
