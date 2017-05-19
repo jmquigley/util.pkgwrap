@@ -20,12 +20,14 @@
     "fs-extra": "^3.0.1",
     "klaw-sync": "^2.1.0",
     "lodash": "^4.17.4",
+    "rimraf": "^2.6.1",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
     "@types/fs-extra": "3.0.1",
     "@types/lodash": "^4.14.64",
     "@types/node": "^7.0.18",
+    "@types/rimraf": "0.0.28",
     "@types/yargs": "^6.6.0",
     "coveralls": "^2.13.1",
     "nyc": "^10.3.2",

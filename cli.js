@@ -18,6 +18,7 @@
  * - testing
  * - reporting
  * - coverage
+ * - clean
  */
 
 'use strict';
@@ -33,6 +34,7 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 
 let argv = require('yargs')
 	.usage('Usage: $0 <command> [--ava --jsx]')
+	.command('clean', 'Removes intermediate files from the module')
 	.command('postinstall', 'Executed during the NPM post install')
 	.command('build', 'Executes the typescript build command')
 	.command('lint', 'Executes the lint tool to check for code errors')
@@ -123,6 +125,19 @@ function cleanupJSXFilles(files) {
 			fs.removeSync(dst);
 		}
 	});
+}
+
+if (argv.clean) {
+	call([
+		'rimraf',
+		'dist',
+		'build',
+		'coverage',
+		'.nyc_output',
+		'.DS_Store'
+	]);
+
+	cleanupJSXFilles(getJSXFiles(process.cwd()));
 }
 
 if (argv.build) {

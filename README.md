@@ -10,6 +10,7 @@ This creates a command line program named `pkgwrap`.  It is used to just wrap co
  - testing
  - reporting
  - coverage
+ - clean
 
 The wrapper simplifies the setting of command line parameters to the programs above.  e.g. dynamically setting the temporary directory for nyc output.
 
@@ -21,7 +22,7 @@ This implementation is opinionated and wraps the following packages:
 - testing: [mocha](https://mochajs.org/) or [ava](https://github.com/avajs/ava) (if --ava used)
 - reporting: [nyc](https://www.npmjs.com/package/nyc)
 - coverage: [coveralls](https://www.npmjs.com/package/coveralls)
-
+- clean: [rimraf](https://www.npmjs.com/package/rimraf)
 
 ## Installation
 
@@ -40,6 +41,7 @@ This is a command line package used with the `scripts` section of `package.json`
         "test": "pkgwrap --testing --ava",
         "report": "pkgwrap --reporting"
         "coverage": "pkgwrap --coverage"
+		"clean": "pkgwrap --clean"
     }
 
 #### Commands
@@ -50,11 +52,13 @@ This is a command line package used with the `scripts` section of `package.json`
 - `--testing`: calls the testing program.  It uses mocha by default.  It can be overriden to use ava with an additonal `--ava` flag.
 - `--reporting`: runs nyc to create information that can be used in reporting testing coverage
 - `--coverage`: runs coveralls to upload report details after a successful build.
+- `--clean`: removes intermediate build/distribution files from the module.  This includes `dist`, `build`, `coverage`.
 
 #### Options
 
 - `--ava`: Used with the `--testing` command to use the ava test runner.
 - `--jsx`: Used with the `--build` command to search for `.jsx` files and use babel to transpile them.
+- `--webpack`: Used with the `--build` command to invoke webpack if it is avaialble
 
 #### Dependencies
 The following development dependencies must be included within the `package.json` file of the project that uses this cli:
@@ -69,5 +73,6 @@ The following development dependencies must be included within the `package.json
 - [mocha](https://www.npmjs.com/package/mocha)
 - [nyc](https://www.npmjs.com/package/nyc)
 - [powerassert](https://www.npmjs.com/package/power-assert) (if using mocha)
+- [rimraf](https://www.npmjs.com/package/rimraf)
 - [typescript](https://www.npmjs.com/package/typescript)
 - [tslint](https://www.npmjs.com/package/tslint)
