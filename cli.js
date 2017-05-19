@@ -128,13 +128,29 @@ function cleanupJSXFilles(files) {
 }
 
 if (argv.clean) {
+	let files = {
+		cleanup: [
+			'dist',
+			'build',
+			'coverage',
+			'.nyc_output',
+			'.DS_Store'
+		]
+	};
+
+	if (pkg.hasOwnProperty('pkgwrap')) {
+		if (pkg.pkgwrap.hasOwnProperty('cleanup') && pkg.pkgwrap.cleanup instanceof Array) {
+			files.cleanup = _.union(files.cleanup, pkg.pkgwrap.cleanup);
+		}
+	}
+
+	let cleanupFiles = files.cleanup.map((val) => {
+		return `"${val}"`;
+	}).join(' ');
+
 	call([
-		'node_modules/util.pkgwrap/.bin/rimraf',
-		'dist',
-		'build',
-		'coverage',
-		'.nyc_output',
-		'.DS_Store'
+		'./node_modules/util.pkgwrap/node_modules/.bin/rimraf',
+		cleanupFiles
 	].join(' '));
 
 	cleanupJSXFilles(getJSXFiles(process.cwd()));
