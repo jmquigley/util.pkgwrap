@@ -201,22 +201,22 @@ if (argv.build) {
 }
 
 if (argv.testing) {
-	let runner: string = `${bin}/mocha`;
-	let options: '--require intelli-espower-loader'
+	let runner = `${bin}/mocha`;
+	let options = ['--require intelli-espower-loader'];
 	if (argv.ava) {
 		runner = `${bin}/ava`;
-		options = '--verbose';
+		options = ['--verbose'];
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
-		options = '';
+		options = [''];
 	}
 
 	call([
 		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
 		runner,
-		options,
+		options.join(' '),
 		'--harmony-proxies'
 	].join(' '));
 }
