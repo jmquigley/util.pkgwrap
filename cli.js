@@ -205,7 +205,7 @@ if (argv.testing) {
 	let options = ['--require intelli-espower-loader'];
 	if (argv.ava) {
 		runner = `${bin}/ava`;
-		options = ['--verbose'];
+		options = ['--verbose', '--harmony-proxies'];
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
@@ -216,8 +216,7 @@ if (argv.testing) {
 		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
 		runner,
-		options.join(' '),
-		'--harmony-proxies'
+		options.join(' ')
 	].join(' '));
 }
 
