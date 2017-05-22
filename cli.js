@@ -43,6 +43,8 @@ let argv = require('yargs')
 	.command('coverage', 'Creates nyc report data used by coveralls')
 	.describe('ava', 'Used with --testing to use the ava test runner')
 	.default('ava', false)
+	.describe('jest', 'Used with --testing to use the jest test runner')
+	.default('jest', false)
 	.describe('jsx', 'used with --build to use babel to build JSX files')
 	.default('jsx', false)
 	.describe('jsxtest', 'used with --build to use bable to build JSX files in the test directory')
@@ -199,11 +201,22 @@ if (argv.build) {
 }
 
 if (argv.testing) {
+	let runner: string = `${bin}/mocha`;
+	let options: '--require intelli-espower-loader'
+	if (argv.ava) {
+		runner = `${bin}/ava`;
+		options = '--verbose';
+	}
+	if (argv.jest) {
+		runner = `${bin}/jest`
+		options = '';
+	}
+
 	call([
 		path.resolve(`${bin}/nyc`),
 		`--temp-directory=${tmp}`,
-		(argv.ava) ? `${bin}/ava` : `${bin}/mocha`,
-		(argv.ava) ? '--verbose' : '--require intelli-espower-loader',
+		runner,
+		options,
 		'--harmony-proxies'
 	].join(' '));
 }
