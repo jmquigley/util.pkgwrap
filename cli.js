@@ -127,6 +127,11 @@ function getJSXFiles(baseDir) {
 		filter: filterFn
 	});
 
+    console.log('Found JSX files:');
+    files.forEach(file => {
+        console.log(` ~> ${file.path}`);
+    });
+
 	return files;
 }
 
