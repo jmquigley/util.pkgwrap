@@ -175,7 +175,7 @@ if (argv.clean) {
 
 if (argv.build) {
 	call([
-		path.resolve(`${bin}/tsc`),
+		'tsc',
 		'-p',
 		'.'
 	].join(' '));
