@@ -353,7 +353,7 @@ if (argv.docs) {
 			'./node_modules/util.pkgwrap/node_modules/.bin/jsdoc',
 			'-a all',
 			'-R ./README.md',
-			'-c jsdoc.conf',
+			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
 			files.map(filename => {return `${path.join(process.cwd(), filename)}`}).join(' ')
 		].join(' '));
 	}

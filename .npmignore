@@ -7,7 +7,7 @@ tslint.json
 .editorconfig
 .gitignore
 .gitattributes
-
+.tern-port
 
 coverage
 .nyc_output
