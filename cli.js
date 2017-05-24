@@ -98,7 +98,6 @@ function getJSXFiles(baseDir) {
 
 	let ignoreList = [
 		'.git',
-		'build',
 		'coverage',
 		'.nyc_output',
 		'dist',
