@@ -46,39 +46,32 @@
         <article><h1>util.pkgwrap <a href="https://travis-ci.org/jmquigley/util.pkgwrap"><img src="https://travis-ci.org/jmquigley/util.pkgwrap.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/sindresorhus/xo"><img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg" alt="XO code style"></a> <a href="https://www.npmjs.com/package/util.pkgwrap"><img src="https://img.shields.io/npm/v/util.pkgwrap.svg" alt="NPM"></a></h1><blockquote>
 <p>A script wrapper for <code>package.json</code> scripts.</p>
 </blockquote>
-<p>This creates a command line program named <code>pkgwrap</code>.  It is used to just wrap command line operations used when launching scripts from NPM.  It wraps the following operations:</p>
-<ul>
-<li>postinstall</li>
-<li>build</li>
-<li>lint</li>
-<li>testing</li>
-<li>reporting</li>
-<li>coverage</li>
-<li>clean</li>
-</ul>
-<p>The wrapper simplifies the setting of command line parameters to the programs above.  e.g. dynamically setting the temporary directory for nyc output.</p>
+<p>This creates a command line program named <code>pkgwrap</code>.  It is used to just wrap command line operations used when launching scripts from NPM.  The wrapper simplifies the setting of command line parameters to the programs above.  e.g. dynamically setting the temporary directory for nyc output.</p>
 <p>This implementation is opinionated and wraps the following packages:</p>
 <ul>
 <li>build: <a href="https://www.typescriptlang.org/">typescript</a> and <a href="https://babeljs.io/">babel</a> (if --jsx used)</li>
-<li>lint: <a href="https://palantir.github.io/tslint/">tslint</a></li>
-<li>testing: <a href="https://mochajs.org/">mocha</a> or <a href="https://github.com/avajs/ava">ava</a> (if --ava used)</li>
-<li>reporting: <a href="https://www.npmjs.com/package/nyc">nyc</a></li>
-<li>coverage: <a href="https://www.npmjs.com/package/coveralls">coveralls</a></li>
 <li>clean: <a href="https://www.npmjs.com/package/rimraf">rimraf</a></li>
+<li>coverage: <a href="https://www.npmjs.com/package/coveralls">coveralls</a></li>
+<li>docs: <a href="https://www.npmjs.com/package/jsdoc-to-markdown">jsdoc-to-markdown</a> and <a href="http://usejsdoc.org/index.html">JSDoc</a></li>
+<li>lint: <a href="https://palantir.github.io/tslint/">tslint</a></li>
+<li>reporting: <a href="https://www.npmjs.com/package/nyc">nyc</a></li>
+<li>testing: <a href="https://mochajs.org/">mocha</a> or <a href="https://github.com/avajs/ava">ava</a> (if --ava used) or <a href="https://facebook.github.io/jest/">jest</a> (if --jest used)</li>
 </ul>
 <h2>Installation</h2><p>To install as an application dependency with cli:</p>
 <pre class="prettyprint source"><code>$ npm install --save util.pkgwrap</code></pre><h2>Usage</h2><p>This is a command line package used with the <code>scripts</code> section of <code>package.json</code>.  An example would be:</p>
 <pre class="prettyprint source"><code>&quot;scripts&quot;: {
-    &quot;postinstall&quot;: &quot;pkgwrap --postinstall&quot;,
     &quot;build&quot;: &quot;pkgwrap --build --jsx&quot;,
+    &quot;clean&quot;: &quot;pkgwrap --clean&quot;,
+    &quot;coverage&quot;: &quot;pkgwrap --coverage&quot;,
+    &quot;docs&quot;: &quot;pkgwrap --docs --site&quot;,
     &quot;lint&quot;: &quot;pkgwrap --lint&quot;,
-    &quot;test&quot;: &quot;pkgwrap --testing --ava&quot;,
-    &quot;report&quot;: &quot;pkgwrap --reporting&quot;
-    &quot;coverage&quot;: &quot;pkgwrap --coverage&quot;
-    &quot;clean&quot;: &quot;pkgwrap --clean&quot;
+    &quot;postinstall&quot;: &quot;pkgwrap --postinstall&quot;,
+    &quot;report&quot;: &quot;pkgwrap --reporting&quot;,
+    &quot;test&quot;: &quot;pkgwrap --testing --ava&quot;
 }</code></pre><h4>Commands</h4><ul>
 <li><code>--postinstall</code>: this is executed after <code>npm install</code>.  It is used to create directoris or fix their permissions.</li>
 <li><code>--build</code>: calls the typescript build process</li>
+<li><code>--docs</code>: generates markdown and website documents for a module</li>
 <li><code>--lint</code>: calls the tslint code checking program</li>
 <li><code>--testing</code>: calls the testing program.  It uses mocha by default.  It can be overriden to use ava with an additonal <code>--ava</code> flag.</li>
 <li><code>--reporting</code>: runs nyc to create information that can be used in reporting testing coverage</li>
@@ -86,8 +79,10 @@
 <li><code>--clean</code>: removes intermediate build/distribution files from the module.  This includes <code>dist</code>, <code>build</code>, <code>coverage</code>.</li>
 </ul>
 <h4>Options</h4><ul>
-<li><code>--ava</code>: Used with the <code>--testing</code> command to use the ava test runner.</li>
+<li><code>--ava</code>: Used with the <code>--testing</code> command to use the <a href="https://github.com/avajs/ava">ava</a> test runner.</li>
+<li><code>--jest</code>: Used witht he <code>--testing</code> command to use the <a href="https://facebook.github.io/jest/">jest</a> test runner.</li>
 <li><code>--jsx</code>: Used with the <code>--build</code> command to search for <code>.jsx</code> files and use babel to transpile them.</li>
+<li><code>--site</code>: Used with the <code>--docs</code> command to generate a corresponding jsdoc website (jsdoc)</li>
 <li><code>--webpack</code>: Used with the <code>--build</code> command to invoke webpack if it is avaialble</li>
 </ul>
 <h4>Dependencies</h4><p>The following development dependencies must be included within the <code>package.json</code> file of the project that uses this cli:</p>
@@ -98,7 +93,9 @@
 <li><a href="https://www.npmjs.com/package/gulp">gulp</a></li>
 <li><a href="https://www.npmjs.com/package/gulp-cli">gulp-cli</a></li>
 <li><a href="https://www.npmjs.com/package/intelli-espower-loader">intelli-espower-loader</a> (if using mocha)</li>
+<li><a href="https://facebook.github.io/jest/">jest</a></li>
 <li><a href="https://www.npmjs.com/package/jsdoc">jsdoc</a></li>
+<li><a href="https://www.npmjs.com/package/jsdoc-to-markdown">jsdoc-to-markdown</a></li>
 <li><a href="https://www.npmjs.com/package/mocha">mocha</a></li>
 <li><a href="https://www.npmjs.com/package/nyc">nyc</a></li>
 <li><a href="https://www.npmjs.com/package/power-assert">powerassert</a> (if using mocha)</li>
@@ -122,7 +119,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 24 2017 13:11:13 GMT-0500 (CDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 24 2017 13:38:18 GMT-0500 (CDT)
 </footer>
 
 <script> prettyPrint(); </script>

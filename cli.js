@@ -338,6 +338,8 @@ if (argv.docs) {
 
 		if (fs.existsSync(dst)) {
 			fs.removeSync(dst);
+		} else if (!fs.existsSync(path.dirname(dst))) {
+			fs.mkdirsSync(path.dirname(dst));
 		}
 
 		console.log(` -> Creating ${dst} from ${src}`);
