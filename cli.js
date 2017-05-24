@@ -180,6 +180,8 @@ if (argv.build) {
 		'.'
 	].join(' '));
 
+    call('ls -R lib');
+
 	// This option will search for JSX files within the project directory and
 	// call babel to transpile them.  This assumes that babel is available
 	// and is configured.  The "jsxtest" version will only look in the test
