@@ -350,8 +350,7 @@ if (argv.docs) {
 	if (argv.site) {
 		console.log('Generating JSDoc site');
 		call([
-			// './node_modules/util.pkgwrap/node_modules/.bin/jsdoc',
-			'jsdoc',
+			'./node_modules/util.pkgwrap/node_modules/.bin/jsdoc',
 			'-a all',
 			'-R ./README.md',
 			'-c jsdoc.conf',
