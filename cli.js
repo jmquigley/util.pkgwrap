@@ -46,6 +46,8 @@ let argv = require('yargs')
 	.command('coverage', 'Creates nyc report data used by coveralls')
 	.describe('ava', 'Used with --testing to use the ava test runner')
 	.default('ava', false)
+	.describe('debug', 'Turns on verbose messages defined for debugging')
+	.default('debug', false)
 	.describe('jest', 'Used with --testing to use the jest test runner')
 	.default('jest', false)
 	.describe('jsx', 'used with --build to use babel to build JSX files')
@@ -126,10 +128,12 @@ function getJSXFiles(baseDir) {
 		filter: filterFn
 	});
 
-    console.log('Found JSX files:');
-    files.forEach(file => {
-        console.log(` ~> ${file.path}`);
-    });
+	if (argv.debug) {
+		console.log('Found JSX files:');
+		files.forEach(file => {
+			console.log(` ~> ${file.path}`);
+		});
+	}
 
 	return files;
 }
@@ -198,11 +202,14 @@ if (argv.build) {
 		}
 
 		if (files.length > 0) {
-			console.log('Compiling JSX Files:');
+			console.log('Compiling JSX Files');
 		}
 
 		files.forEach(file => {
-			console.log(` - ${file.path}`);
+			if (argv.debug) {
+				console.log(` - ${file.path}`);
+			}
+
 			call([
 				'babel',
 				file.path,
@@ -346,7 +353,10 @@ if (argv.docs) {
 			fs.mkdirsSync(path.dirname(dst));
 		}
 
-		console.log(` -> Creating ${dst} from ${src}`);
+		if (argv.debug) {
+			console.log(` -> Creating ${dst} from ${src}`);
+		}
+
 		let mdFile = jsdoc2md.renderSync({files: src});
 		fs.writeFileSync(dst, mdFile);
 	});
