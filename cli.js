@@ -169,7 +169,7 @@ if (argv.clean) {
 	}).join(' ');
 
 	call([
-		'./node_modules/util.pkgwrap/node_modules/.bin/rimraf',
+		'rimraf',
 		cleanupFiles
 	].join(' '));
 
@@ -364,7 +364,7 @@ if (argv.docs) {
 	if (argv.site) {
 		console.log('Generating JSDoc site');
 		call([
-			'./node_modules/util.pkgwrap/node_modules/.bin/jsdoc',
+			'jsdoc',
 			'-a all',
 			'-R ./README.md',
 			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
