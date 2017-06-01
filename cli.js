@@ -273,7 +273,7 @@ if (argv.lint) {
 	}).join(' ');
 
 	let exclude = files.exclude.map((val) => {
-		return `--exclude="${val}"`;
+		return `--exclude "${val}"`;
 	}).join(' ');
 
 	call([
