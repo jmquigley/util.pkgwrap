@@ -34,6 +34,8 @@ const path = require('path');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
+const pkgbin = path.join(path.join(process.cwd(), 'node_modules', 'util.pkgwrap', 'node_modules', '.bin'));
+
 let argv = require('yargs')
 	.usage('Usage: $0 <command> [--ava --jsx]')
 	.command('clean', 'Removes intermediate files from the module')
@@ -169,7 +171,7 @@ if (argv.clean) {
 	}).join(' ');
 
 	call([
-		'rimraf',
+		path.join(path.join(pkgbin, 'rimraf')),
 		cleanupFiles
 	].join(' '));
 
@@ -364,7 +366,7 @@ if (argv.docs) {
 	if (argv.site) {
 		console.log('Generating JSDoc site');
 		call([
-			'jsdoc',
+			path.join(pkgbin, 'jsdoc'),
 			'-a all',
 			'-R ./README.md',
 			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
