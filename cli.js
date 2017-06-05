@@ -34,7 +34,8 @@ const path = require('path');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
-const pkgbin = path.join(path.join(process.cwd(), 'node_modules', '.bin'));
+// const pkgbin = path.join(path.join(process.cwd(), 'node_modules', '.bin'));
+const pkgbin = path.join(path.join(process.cwd(), 'node_modules', 'util.pkgwrap', 'node_modules', '.bin'));
 
 let argv = require('yargs')
 	.usage('Usage: $0 <command> [--ava --jsx]')

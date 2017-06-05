@@ -27,14 +27,14 @@
     "yargs": "^8.0.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "3.0.2",
-    "@types/lodash": "^4.14.64",
-    "@types/node": "^7.0.22",
+    "@types/fs-extra": "3.0.3",
+    "@types/lodash": "^4.14.65",
+    "@types/node": "^7.0.27",
     "@types/rimraf": "0.0.28",
     "@types/yargs": "^6.6.0",
     "coveralls": "^2.13.1",
-    "nyc": "^11.0.1",
-    "tslint": "^5.4.0",
+    "nyc": "^11.0.2",
+    "tslint": "^5.4.2",
     "typescript": "^2.3.4"
   },
   "bin": {
