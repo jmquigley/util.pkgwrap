@@ -24,6 +24,7 @@
     "klaw-sync": "^2.1.0",
     "lodash": "^4.17.4",
     "rimraf": "^2.6.1",
+    "workerpool": "^2.2.2",
     "yargs": "^8.0.2"
   },
   "devDependencies": {

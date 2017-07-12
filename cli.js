@@ -19,6 +19,7 @@
  * - reporting
  * - coverage
  * - clean
+ *
  */
 
 'use strict';
@@ -30,6 +31,7 @@ const fs = require('fs-extra');
 const jsdoc2md = require('jsdoc-to-markdown')
 const walk = require('klaw-sync');
 const _ = require('lodash');
+const workerpool = require('workerpool');
 const path = require('path');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
@@ -55,8 +57,10 @@ let argv = require('yargs')
 	.default('jest', false)
 	.describe('jsx', 'used with --build to use babel to build JSX files')
 	.default('jsx', false)
-	.describe('jsxtest', 'used with --build to use bable to build JSX files in the test directory')
-	.default('jsxtest', false)
+	.describe('minWorkers', 'the smallest number of thread works for JSX build')
+	.default('minWorkers', 5)
+	.describe('maxWorkers', 'the largest number of thread works for JSX build')
+	.default('maxWorkers', 10)
 	.describe('site', 'used with --docs to build a site out of jsdoc comments')
 	.default('site', false)
 	.describe('webpack', 'used with --build to start a webpack build of the current soruce')
@@ -98,8 +102,11 @@ function call(cmd, quiet = false) {
 	}
 }
 
-function getJSXFiles(baseDir) {
-	console.log(`Searching for JSX files in '${baseDir}'`);
+function getJSXFiles(baseDir, verbose=false) {
+
+	if (verbose) {
+		console.log(`Searching for JSX files in '${baseDir}'`);
+	}
 
 	let ignoreList = [
 		'.git',
@@ -131,10 +138,12 @@ function getJSXFiles(baseDir) {
 		filter: filterFn
 	});
 
-	console.log('Found JSX files:');
-	files.forEach(file => {
-		console.log(` ~> ${file.path}`);
-	});
+	if (verbose) {
+		console.log('Found JSX files:');
+		files.forEach(file => {
+			console.log(` ~> ${file.path}`);
+		});
+	}
 
 	return files;
 }
@@ -186,15 +195,12 @@ if (argv.build) {
 
 	// This option will search for JSX files within the project directory and
 	// call babel to transpile them.  This assumes that babel is available
-	// and is configured.  The "jsxtest" version will only look in the test
-	// directory for files.
-	if (argv.jsx || argv.jsxtest) {
+	// and is configured.  This also assumes that the previous typescript
+	// compilation is using the "preserve" option to not interfer with the
+	// react compilation
+	if (argv.jsx) {
 
 		let baseDir = process.cwd();
-		if (argv.jsxtest) {
-			baseDir = path.join(baseDir, 'test')
-		}
-
 		let files = getJSXFiles(baseDir);
 		cleanupJSXFilles(files);
 
@@ -203,22 +209,44 @@ if (argv.build) {
 		}
 
 		if (files.length > 0) {
-			console.log('Compiling JSX Files');
-		}
+			console.log(`Compiling JSX Files (${files.length} files)`);
 
-		files.forEach(file => {
-			if (argv.debug) {
-				console.log(` - ${file.path}`);
+			const pool = workerpool.pool({
+				minWorkers: argv.minWorkers,
+				maxWorkers: argv.maxWorkers
+			});
+
+			const promises = [];
+
+			for (let file of files) {
+				console.log(` -> ${file.path}`)
+				promises.push(pool.exec((file) => {
+					const ps = require('child_process');
+					try {
+						ps.execSync([
+							'babel',
+							file.path,
+							'-o',
+							file.path.slice(0, -1),
+							'--source-maps inline'
+						].join(' '), {stdio:[0,1,2]});
+					} catch (err) {
+						return `Error compiling file: ${file.path} -> ${err}`;
+					}
+
+					return `compiled: ${file.path}`
+				}, [file]));
 			}
 
-			call([
-				'babel',
-				file.path,
-				'-o',
-				file.path.slice(0, -1),
-				'--source-maps inline'
-			].join(' '), true);
-		});
+			Promise.all(promises)
+				.then(results => {
+					console.log(`Compilation finished - ${results.length} files`);
+					pool.clear();
+				})
+				.catch(err => {
+					console.error(`Error in JSX compilation: ${err}`);
+				});
+		}
     }
 }
 
@@ -227,7 +255,7 @@ if (argv.testing) {
 	let options = ['--require intelli-espower-loader'];
 	if (argv.ava) {
 		runner = `${bin}/ava`;
-		options = ['--verbose', '--harmony-proxies'];
+		options = ['--verbose'];
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
