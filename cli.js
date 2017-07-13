@@ -280,12 +280,12 @@ if (argv.testing) {
 if (argv.lint) {
 	let files = {
 		include: [
-			'./lib/**/*.ts',
-			'./src/**/*.ts',
-			'./test/**/*.ts',
-			'test*.ts',
-			'index.ts',
-			'cli.ts'
+			'./lib/**/*.{ts,tsx}',
+			'./src/**/*.{ts,tsx}',
+			'./test/**/*.{ts,tsx}',
+			'test*.{ts,tsx}',
+			'index.{ts,tsx}',
+			'cli.{ts,tsx}'
 		],
 		exclude: [
 			'./**/*.d.ts'
