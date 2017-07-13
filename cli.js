@@ -262,12 +262,7 @@ if (argv.testing) {
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
-		options = [
-			'--notify',
-			'--forceExit',
-			'--coverage'
-
-		];
+		options = [];
 	}
 
 	call([
