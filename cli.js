@@ -253,18 +253,25 @@ if (argv.build) {
 if (argv.testing) {
 	let runner = `${bin}/mocha`;
 	let options = ['--require intelli-espower-loader'];
+	let preprocessor = '';
+
 	if (argv.ava) {
+		preprocessor = path.resolve(`${bin}/nyc`) + ` --temp-directory=${tmp}`;
 		runner = `${bin}/ava`;
 		options = ['--verbose'];
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
-		options = [''];
+		options = [
+			'--notify',
+			'--forceExit',
+			'--coverage'
+
+		];
 	}
 
 	call([
-		path.resolve(`${bin}/nyc`),
-		`--temp-directory=${tmp}`,
+		preprocessor,
 		runner,
 		options.join(' ')
 	].join(' '));
@@ -320,15 +327,24 @@ if (argv.reporting) {
 }
 
 if (argv.coverage) {
-	call([
-		path.resolve(`${bin}/nyc`),
-		'report',
-		`--temp-directory=${tmp}`,
-		'--reporter=text-lcov',
-		'|',
-		`${bin}/coveralls`
+	if (argv.jest) {
+		call([
+			'cat',
+			'./coverage/lcov.info',
+			'|',
+			`${bin}/coveralls`
+		].join(' '));
+	} else {
+		call([
+			path.resolve(`${bin}/nyc`),
+			'report',
+			`--temp-directory=${tmp}`,
+			'--reporter=text-lcov',
+			'|',
+			`${bin}/coveralls`
 
-	].join(' '));
+		].join(' '));
+	}
 }
 
 if (argv.postinstall) {
