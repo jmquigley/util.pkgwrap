@@ -187,6 +187,7 @@ if (argv.clean) {
 }
 
 if (argv.build) {
+	console.log('Building Typescript code')
 	call([
 		'tsc',
 		'-p',
@@ -238,14 +239,19 @@ if (argv.build) {
 					console.log(`Compilation finished - ${results.length} files`);
 					pool.clear();
 				})
+				.then(() => {
+					if (argv.webpack) {
+						call('webpack');
+					}
+				})
 				.catch(err => {
 					console.error(`Error in JSX compilation: ${err}`);
 				});
 		}
-    }
-
-	if (argv.webpack) {
-		call('webpack');
+    } else {
+		if (argv.webpack) {
+			call('webpack');
+		}
 	}
 }
 
