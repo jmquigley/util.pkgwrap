@@ -199,14 +199,9 @@ if (argv.build) {
 	// compilation is using the "preserve" option to not interfer with the
 	// react compilation
 	if (argv.jsx) {
-
 		let baseDir = process.cwd();
 		let files = getJSXFiles(baseDir);
 		cleanupJSXFilles(files);
-
-		if (argv.webpack) {
-			call('webpack');
-		}
 
 		if (files.length > 0) {
 			console.log(`Compiling JSX Files (${files.length} files)`);
@@ -248,6 +243,10 @@ if (argv.build) {
 				});
 		}
     }
+
+	if (argv.webpack) {
+		call('webpack');
+	}
 }
 
 if (argv.testing) {
