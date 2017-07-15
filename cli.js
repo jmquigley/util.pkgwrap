@@ -267,7 +267,7 @@ if (argv.testing) {
 	}
 	if (argv.jest) {
 		runner = `${bin}/jest`
-		options = ['--forceExit'];
+		options = [];
 	}
 
 	call([
