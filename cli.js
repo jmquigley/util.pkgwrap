@@ -372,6 +372,7 @@ if (argv.docs) {
 		'!./docs/**',
 		'!./node_modules/**',
 		'!./packages/**',
+		'!./public/**',
 		'!./test/**',
 		'!./**/*.config.js'
 	];
