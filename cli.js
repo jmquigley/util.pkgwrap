@@ -368,6 +368,7 @@ if (argv.docs) {
 		'!./**/*.test.js',
 		'!./build/**',
 		'!./coverage/**',
+		'!./demo/**',
 		'!./dist/**',
 		'!./docs/**',
 		'!./node_modules/**',
