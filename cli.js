@@ -375,6 +375,7 @@ if (argv.docs) {
 		'!./packages/**',
 		'!./public/**',
 		'!./test/**',
+		'!./**/__test__/**',
 		'!./**/*.config.js'
 	];
 	const files = globby.sync(srcFiles);
