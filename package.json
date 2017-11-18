@@ -17,12 +17,12 @@
   },
   "dependencies": {
     "cpx": "^1.5.0",
-    "cross-env": "^5.1.0",
+    "cross-env": "^5.1.1",
     "expand-home-dir": "github:jmquigley/expand-home-dir",
     "fs-extra": "^4.0.2",
-    "globby": "^6.1.0",
+    "globby": "^7.0.0",
     "jsdoc": "^3.5.5",
-    "jsdoc-to-markdown": "^3.0.0",
+    "jsdoc-to-markdown": "^3.0.2",
     "klaw-sync": "^3.0.2",
     "lodash": "^4.17.4",
     "rimraf": "^2.6.2",
@@ -30,15 +30,15 @@
     "yargs": "^10.0.3"
   },
   "devDependencies": {
-    "@types/fs-extra": "4.0.2",
-    "@types/lodash": "^4.14.78",
-    "@types/node": "^8.0.46",
+    "@types/fs-extra": "4.0.5",
+    "@types/lodash": "^4.14.85",
+    "@types/node": "^8.0.53",
     "@types/rimraf": "2.0.2",
     "@types/yargs": "^8.0.2",
     "coveralls": "^3.0.0",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.6.1"
   },
   "bin": {
     "pkgwrap": "./cli.js"
