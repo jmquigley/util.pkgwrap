@@ -1,6 +1,6 @@
 {
   "name": "util.pkgwrap",
-  "version": "0.0.75",
+  "version": "0.0.76",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A script wrapper for package.json scripts.",
   "private": false,
