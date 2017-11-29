@@ -98,7 +98,7 @@ function call(cmd, quiet = false) {
 
 	const isWin = /^win/.test(process.platform);
 	const shell = isWin ? 'powershell' : '/bin/bash';
-	const shellArgs = isWin ? ['', cmd] : ['-l', '-c', cmd];
+	const shellArgs = isWin ? ['', cmd] : ['-l', '-c', `'${cmd}'`];
 
 	try {
 		ps.execFileSync(shell, shellArgs, {stdio:[0,1,2]});
