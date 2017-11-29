@@ -19,6 +19,7 @@
  * - reporting
  * - coverage
  * - clean
+ * - globals
  *
  */
 
@@ -40,7 +41,8 @@ const pkgbin = path.join(path.join(process.cwd(), 'node_modules', '.bin'));
 //const pkgbin = path.join(path.join(process.cwd(), 'node_modules', 'util.pkgwrap', 'node_modules', '.bin'));
 
 let argv = require('yargs')
-	.usage('Usage: $0 <command> [--ava --jsx]')
+	.usage('Usage: $0 <command> [options]')
+	.command('globals', 'Installs all globalDependencies in package.json')
 	.command('clean', 'Removes intermediate files from the module')
 	.command('docs', 'Generates jsdoc and markdown documents for the project')
 	.command('postinstall', 'Executed during the NPM post install')
@@ -417,6 +419,33 @@ if (argv.docs) {
 			'-R ./README.md',
 			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
 			files.map(filename => {return `${path.join(process.cwd(), filename)}`}).join(' ')
+		].join(' '));
+	}
+}
+
+if (argv.globals) {
+	if (pkg.hasOwnProperty('globalDependencies')) {
+		let deps = pkg['globalDependencies'];
+		let globalPackages = [];
+
+		for (const packageName in deps) {
+			if (deps.hasOwnProperty(packageName)) {
+				globalPackages.push(`${packageName}@${deps[packageName]}`);
+			}
+		}
+
+		call ([
+			'yarn',
+			'global',
+			'add',
+			globalPackages.join(' '),
+			'--silent'
+		].join(' '));
+
+		call ([
+			'yarn',
+			'global',
+			'list'
 		].join(' '));
 	}
 }

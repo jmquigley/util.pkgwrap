@@ -48,6 +48,7 @@ This is a command line package used with the `scripts` section of `package.json`
 - `--reporting`: runs nyc to create information that can be used in reporting testing coverage
 - `--coverage`: runs coveralls to upload report details after a successful build.
 - `--clean`: removes intermediate build/distribution files from the module.  This includes `dist`, `build`, `coverage`.
+- `--globals`: takes global dependencies from package.json ("globalDependencies") and installs them
 
 #### Options
 
