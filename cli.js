@@ -438,14 +438,7 @@ if (argv.globals) {
 			'yarn',
 			'global',
 			'add',
-			globalPackages.join(' '),
-			'--silent'
-		].join(' '));
-
-		call ([
-			'yarn',
-			'global',
-			'list'
+			globalPackages.join(' ')
 		].join(' '));
 	}
 }
