@@ -96,8 +96,12 @@ function call(cmd, quiet = false) {
 		console.log(cmd);
 	}
 
+	const isWin = /^win/.test(process.platform);
+	const shell = isWin ? 'powershell' : '/bin/bash';
+	const shellArgs = isWin ? ['', cmd] : ['-l', '-c', cmd];
+
 	try {
-		ps.execSync(cmd, {stdio:[0,1,2]});
+		ps.execFileSync(shell, shellArgs, {stdio:[0,1,2]});
 	} catch (err) {
 		console.error(err.message);
 		process.exit(127);
