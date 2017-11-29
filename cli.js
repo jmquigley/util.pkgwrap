@@ -258,17 +258,17 @@ if (argv.build) {
 }
 
 if (argv.testing) {
-	let runner = `${bin}/mocha`;
+	let runner = 'mocha';
 	let options = ['--require intelli-espower-loader'];
 	let preprocessor = '';
 
 	if (argv.ava) {
-		preprocessor = path.resolve(`${bin}/nyc`) + ` --temp-directory=${tmp}`;
-		runner = `${bin}/ava`;
+		preprocessor = `nyc --temp-directory=${tmp}`;
+		runner = 'ava';
 		options = ['--verbose'];
 	}
 	if (argv.jest) {
-		runner = `${bin}/jest`
+		runner = 'jest'
 		options = [];
 	}
 
@@ -313,7 +313,7 @@ if (argv.lint) {
 	}).join(' ');
 
 	call([
-		path.resolve(`${bin}/tslint`),
+		'tslint',
 		include,
 	    exclude
 	].join(' '));
@@ -321,7 +321,7 @@ if (argv.lint) {
 
 if (argv.reporting) {
 	call([
-		path.resolve(`${bin}/nyc`),
+		'nyc',
 		'report',
 		`--temp-directory=${tmp}`,
 		'--reporter=html'
@@ -334,16 +334,16 @@ if (argv.coverage) {
 			'cat',
 			'./coverage/lcov.info',
 			'|',
-			`${bin}/coveralls`
+			'coveralls'
 		].join(' '));
 	} else {
 		call([
-			path.resolve(`${bin}/nyc`),
+			'nyc',
 			'report',
 			`--temp-directory=${tmp}`,
 			'--reporter=text-lcov',
 			'|',
-			`${bin}/coveralls`
+			'coveralls'
 
 		].join(' '));
 	}
