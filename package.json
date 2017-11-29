@@ -1,6 +1,6 @@
 {
   "name": "util.pkgwrap",
-  "version": "0.0.73",
+  "version": "0.0.74",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A script wrapper for package.json scripts.",
   "private": false,
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "cpx": "^1.5.0",
-		"cross-env": "^5.1.1",
+    "cross-env": "^5.1.1",
     "expand-home-dir": "github:jmquigley/expand-home-dir",
     "fs-extra": "^4.0.2",
     "globby": "^7.0.0",
@@ -40,10 +40,10 @@
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
   },
-	"globalDependencies": {
-		"cross-env": "^5.1.1",
+  "globalDependencies": {
+    "cross-env": "^5.1.1",
     "cpx": "^1.5.0"
-	},
+  },
   "bin": {
     "pkgwrap": "./cli.js"
   },
