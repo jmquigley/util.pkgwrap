@@ -41,8 +41,5 @@
     "exclude": [
       "testexclude"
     ]
-  },
-  "scripts": {
-    "preinstall": "yarn global add cross-env coveralls cpx jsdoc jsdoc-to-markdown nyc rimraf"
   }
 }
