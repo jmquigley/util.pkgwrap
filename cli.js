@@ -29,7 +29,6 @@ const ps = require('child_process');
 const home = require('expand-home-dir');
 const globby = require('globby');
 const fs = require('fs-extra');
-const jsdoc2md = require('jsdoc-to-markdown')
 const walk = require('klaw-sync');
 const _ = require('lodash');
 const workerpool = require('workerpool');
@@ -404,8 +403,13 @@ if (argv.docs) {
 			console.log(` -> Creating ${dst} from ${src}`);
 		}
 
-		let mdFile = jsdoc2md.renderSync({files: src});
-		fs.writeFileSync(dst, mdFile);
+		call([
+			'jsdoc2md',
+			'-f',
+			src,
+			'>',
+			dst
+		].join(' '));
 	});
 
 	if (argv.site) {
