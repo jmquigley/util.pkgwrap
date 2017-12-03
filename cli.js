@@ -37,9 +37,6 @@ const path = require('path');
 
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
-const pkgbin = path.join(path.join(process.cwd(), 'node_modules', '.bin'));
-//const pkgbin = path.join(path.join(process.cwd(), 'node_modules', 'util.pkgwrap', 'node_modules', '.bin'));
-
 let argv = require('yargs')
 	.usage('Usage: $0 <command> [options]')
 	.command('globals', 'Installs all globalDependencies in package.json')
@@ -181,7 +178,7 @@ if (argv.clean) {
 	}).join(' ');
 
 	call([
-		path.join(path.join(pkgbin, 'rimraf')),
+		'rimraf',
 		cleanupFiles
 	].join(' '));
 
@@ -414,7 +411,7 @@ if (argv.docs) {
 	if (argv.site) {
 		console.log('Generating JSDoc site');
 		call([
-			path.join(pkgbin, 'jsdoc'),
+			'jsdoc',
 			'-a all',
 			'-R ./README.md',
 			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
