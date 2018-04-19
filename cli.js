@@ -61,6 +61,9 @@ let argv = require('yargs')
 	.default('maxWorkers', 10)
 	.describe('site', 'used with --docs to build a site out of jsdoc comments')
 	.default('site', false)
+	.describe('updateSnapshots', 'Updates testing snapshots in ava or jest')
+	.default('updateSnapshots', false)
+	.alias('updateSnapshots', 'u')
 	.describe('webpack', 'used with --build to start a webpack build of the current soruce')
 	.default('webpack', false)
 	.version()
@@ -261,11 +264,11 @@ if (argv.testing) {
 	if (argv.ava) {
 		preprocessor = `nyc --temp-directory=${tmp}`;
 		runner = 'ava';
-		options = ['--verbose'];
+		options = ['--verbose', argv.updateSnapshots ? '--update-snapshots' : ''];
 	}
 	if (argv.jest) {
 		runner = 'jest'
-		options = [];
+		options = [argv.updateSnapshots ? '-u' : ''];
 	}
 
 	call([
