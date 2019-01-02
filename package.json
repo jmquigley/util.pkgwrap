@@ -16,20 +16,20 @@
     "node": ">=7.x"
   },
   "dependencies": {
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.2",
     "cpx": "^1.5.0",
-    "cross-env": "^5.1.4",
+    "cross-env": "^5.2.0",
     "expand-home-dir": "github:jmquigley/expand-home-dir",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^7.0.1",
     "globby": "^8.0.1",
     "jsdoc": "^3.5.5",
     "jsdoc-to-markdown": "^4.0.1",
-    "klaw-sync": "^3.0.2",
-    "lodash": "^4.17.10",
-    "nyc": "^11.7.1",
-    "rimraf": "^2.6.2",
-    "workerpool": "^2.3.0",
-    "yargs": "^11.0.0"
+    "klaw-sync": "^6.0.0",
+    "lodash": "^4.17.11",
+    "nyc": "^13.1.0",
+    "rimraf": "^2.6.3",
+    "workerpool": "^3.0.0",
+    "yargs": "^12.0.5"
   },
   "bin": {
     "pkgwrap": "./cli.js"
