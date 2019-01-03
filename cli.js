@@ -284,6 +284,7 @@ if (argv.lint) {
 			'./lib/**/*.{ts,tsx}',
 			'./src/**/*.{ts,tsx}',
 			'./test/**/*.{ts,tsx}',
+			'./__tests__/**/*.{ts.tsx}',
 			'test*.{ts,tsx}',
 			'index.{ts,tsx}',
 			'cli.{ts,tsx}'
