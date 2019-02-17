@@ -1,13 +1,15 @@
 node_modules/
 
 test/
+__tests__
+docs
+logs
 tsconfig.json
 tslint.json
 .travis.yml
 .editorconfig
 .gitignore
 .gitattributes
-.tern-port
 
 coverage
 .nyc_output
@@ -18,6 +20,9 @@ test.d.ts
 
 *.js.map
 jsdoc.json
-gulpfile.js
+gulpfile.*
 yarn.lock
 yarn-error.log
+.babelrc
+.prettierignore
+.prettierrc

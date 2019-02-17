@@ -4,16 +4,14 @@ cache: yarn
 sudo: required
 
 node_js:
-    - '8'
-    - '9'
-    - '10'
+    - "node"
 
 before_install:
-    - 'curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.12.3'
+    - "curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0"
     - export PATH="$(yarn global bin):$HOME/.yarn/bin:$PATH"
 
 before_script:
-    - 'yarn install'
+    - "yarn run build"
 
-script:
-    - echo "skipping tests"
+after_success:
+    - "yarn run coverage"

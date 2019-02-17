@@ -1,6 +1,10 @@
-# util.pkgwrap [![Build Status](https://travis-ci.org/jmquigley/util.pkgwrap.svg?branch=master)](https://travis-ci.org/jmquigley/util.pkgwrap) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo) [![NPM](https://img.shields.io/npm/v/util.pkgwrap.svg)](https://www.npmjs.com/package/util.pkgwrap)
+# util.pkgwrap
 
 > A script wrapper for `package.json` scripts.
+
+[![build](https://travis-ci.org/jmquigley/util.pkgwrap.svg?branch=master)](https://travis-ci.org/jmquigley/util.pkgwrap)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![NPM](https://img.shields.io/npm/v/util.pkgwrap.svg)](https://www.npmjs.com/package/util.pkgwrap)
 
 This creates a command line program named `pkgwrap` in `node_modules/.bin`.  It is used to wrap command line operations used when launching scripts from [NPM](https://github.com/npm/npm) or [Yarn](https://yarnpkg.com/en/).  The wrapper simplifies the setting of command line parameters for the programs below.  e.g. dynamically setting the temporary directory for nyc output or parallel building of JSX files.
 
@@ -67,8 +71,6 @@ The following development dependencies must be included within the `package.json
 - [ava](https://github.com/avajs/ava)
 - [babel](https://babeljs.io/)
 - [coveralls](https://www.npmjs.com/package/coveralls)
-- [gulp](https://www.npmjs.com/package/gulp)
-- [gulp-cli](https://www.npmjs.com/package/gulp-cli)
 - [intelli-espower-loader](https://www.npmjs.com/package/intelli-espower-loader) (if using mocha)
 - [jest](https://facebook.github.io/jest/)
 - [jsdoc](https://www.npmjs.com/package/jsdoc)

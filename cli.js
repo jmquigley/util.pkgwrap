@@ -23,66 +23,68 @@
  *
  */
 
-'use strict';
+"use strict";
 
-const ps = require('child_process');
-const home = require('expand-home-dir');
-const globby = require('globby');
-const fs = require('fs-extra');
-const walk = require('klaw-sync');
-const _ = require('lodash');
-const workerpool = require('workerpool');
-const path = require('path');
+const ps = require("child_process");
+const home = require("expand-home-dir");
+const globby = require("globby");
+const fs = require("fs-extra");
+const walk = require("klaw-sync");
+const _ = require("lodash");
+const workerpool = require("workerpool");
+const path = require("path");
 
-const pkg = require(path.join(process.cwd(), 'package.json'));
+const pkg = require(path.join(process.cwd(), "package.json"));
 
-let argv = require('yargs')
-	.usage('Usage: $0 <command> [options]')
-	.command('globals', 'Installs all globalDependencies in package.json')
-	.command('clean', 'Removes intermediate files from the module')
-	.command('docs', 'Generates jsdoc and markdown documents for the project')
-	.command('postinstall', 'Executed during the NPM post install')
-	.command('build', 'Executes the typescript build command')
-	.command('lint', 'Executes the lint tool to check for code errors')
-	.command('testing', 'Start the testing process for the module')
-	.command('reporting', 'Creates coverage reports after testing')
-	.command('coverage', 'Creates nyc report data used by coveralls')
-	.describe('ava', 'Used with --testing to use the ava test runner')
-	.default('ava', false)
-	.describe('debug', 'Turns on verbose messages defined for debugging')
-	.default('debug', false)
-	.describe('jest', 'Used with --testing to use the jest test runner')
-	.default('jest', false)
-	.describe('jsx', 'used with --build to use babel to build JSX files')
-	.default('jsx', false)
-	.describe('minWorkers', 'the smallest number of thread works for JSX build')
-	.default('minWorkers', 5)
-	.describe('maxWorkers', 'the largest number of thread works for JSX build')
-	.default('maxWorkers', 10)
-	.describe('site', 'used with --docs to build a site out of jsdoc comments')
-	.default('site', false)
-	.describe('updateSnapshots', 'Updates testing snapshots in ava or jest')
-	.default('updateSnapshots', false)
-	.alias('updateSnapshots', 'u')
-	.describe('webpack', 'used with --build to start a webpack build of the current soruce')
-	.default('webpack', false)
+let argv = require("yargs")
+	.usage("Usage: $0 <command> [options]")
+	.command("globals", "Installs all globalDependencies in package.json")
+	.command("clean", "Removes intermediate files from the module")
+	.command("docs", "Generates jsdoc and markdown documents for the project")
+	.command("postinstall", "Executed during the NPM post install")
+	.command("build", "Executes the typescript build command")
+	.command("lint", "Executes the lint tool to check for code errors")
+	.command("testing", "Start the testing process for the module")
+	.command("reporting", "Creates coverage reports after testing")
+	.command("coverage", "Creates nyc report data used by coveralls")
+	.describe("ava", "Used with --testing to use the ava test runner")
+	.default("ava", false)
+	.describe("debug", "Turns on verbose messages defined for debugging")
+	.default("debug", false)
+	.describe("jest", "Used with --testing to use the jest test runner")
+	.default("jest", false)
+	.describe("jsx", "used with --build to use babel to build JSX files")
+	.default("jsx", false)
+	.describe("minWorkers", "the smallest number of thread works for JSX build")
+	.default("minWorkers", 5)
+	.describe("maxWorkers", "the largest number of thread works for JSX build")
+	.default("maxWorkers", 10)
+	.describe("site", "used with --docs to build a site out of jsdoc comments")
+	.default("site", false)
+	.describe("updateSnapshots", "Updates testing snapshots in ava or jest")
+	.default("updateSnapshots", false)
+	.alias("updateSnapshots", "u")
+	.describe(
+		"webpack",
+		"used with --build to start a webpack build of the current soruce"
+	)
+	.default("webpack", false)
 	.version()
 	.help()
-	.showHelpOnFail(false, 'Specify --help for available options')
-	.argv;
+	.showHelpOnFail(false, "Specify --help for available options").argv;
 
 // This is used to setup a temporary directory that the user has
 // read/write access.  This makes the user independent of where the
 // actual module resides, or the permissions of the module directory
-let tmp = home(path.join('~/', '.tmp', '.nyc_output'));
+let tmp = home(path.join("~/", ".tmp", ".nyc_output"));
 
-let bin = './node_modules/.bin';
+let bin = "./node_modules/.bin";
 if (!fs.existsSync(tmp)) {
 	fs.mkdirsSync(tmp);
 }
 
 function rstrip(s) {
-	return s.toString().replace(/\r\n$|\n$|\r$/, '');
+	return s.toString().replace(/\r\n$|\n$|\r$/, "");
 }
 
 /**
@@ -96,39 +98,37 @@ function call(cmd, quiet = false) {
 	}
 
 	try {
-		ps.execSync(cmd, {stdio:[0,1,2]});
+		ps.execSync(cmd, {stdio: [0, 1, 2]});
 	} catch (err) {
 		console.error(err.message);
 		process.exit(127);
 	}
 }
 
-function getJSXFiles(baseDir, verbose=false) {
-
+function getJSXFiles(baseDir, verbose = false) {
 	if (verbose) {
 		console.log(`Searching for JSX files in '${baseDir}'`);
 	}
 
 	let ignoreList = [
-		'.git',
-		'coverage',
-		'.nyc_output',
-		'dist',
-		'node_modules',
-		'package'
+		".git",
+		"coverage",
+		".nyc_output",
+		"dist",
+		"node_modules",
+		"package"
 	];
 
 	const filterFn = (item) => {
-
 		// Check the path against the ignore list.  If the path contains any element of the
 		// ignore list, then fail the filter (exclude it with false return)
-		for (let i=0; i<ignoreList.length; i++) {
+		for (let i = 0; i < ignoreList.length; i++) {
 			if (item.path.indexOf(ignoreList[i]) > -1) {
 				return false;
 			}
 		}
 
-		if (path.extname(item.path) !== '.jsx') {
+		if (path.extname(item.path) !== ".jsx") {
 			return false;
 		}
 
@@ -140,8 +140,8 @@ function getJSXFiles(baseDir, verbose=false) {
 	});
 
 	if (verbose) {
-		console.log('Found JSX files:');
-		files.forEach(file => {
+		console.log("Found JSX files:");
+		files.forEach((file) => {
 			console.log(` ~> ${file.path}`);
 		});
 	}
@@ -150,7 +150,7 @@ function getJSXFiles(baseDir, verbose=false) {
 }
 
 function cleanupJSXFilles(files) {
-	files.forEach(file => {
+	files.forEach((file) => {
 		let dst = file.path.slice(0, -1);
 		if (fs.existsSync(dst)) {
 			fs.removeSync(dst);
@@ -160,40 +160,32 @@ function cleanupJSXFilles(files) {
 
 if (argv.clean) {
 	let files = {
-		cleanup: [
-			'dist',
-			'build',
-			'coverage',
-			'.nyc_output',
-			'.DS_Store'
-		]
+		cleanup: ["dist", "build", "coverage", ".nyc_output", ".DS_Store"]
 	};
 
-	if (pkg.hasOwnProperty('pkgwrap')) {
-		if (pkg.pkgwrap.hasOwnProperty('cleanup') && pkg.pkgwrap.cleanup instanceof Array) {
+	if (pkg.hasOwnProperty("pkgwrap")) {
+		if (
+			pkg.pkgwrap.hasOwnProperty("cleanup") &&
+			pkg.pkgwrap.cleanup instanceof Array
+		) {
 			files.cleanup = _.union(files.cleanup, pkg.pkgwrap.cleanup);
 		}
 	}
 
-	let cleanupFiles = files.cleanup.map((val) => {
-		return `"${val}"`;
-	}).join(' ');
+	let cleanupFiles = files.cleanup
+		.map((val) => {
+			return `"${val}"`;
+		})
+		.join(" ");
 
-	call([
-		'rimraf',
-		cleanupFiles
-	].join(' '));
+	call(["rimraf", cleanupFiles].join(" "));
 
 	cleanupJSXFilles(getJSXFiles(process.cwd()));
 }
 
 if (argv.build) {
-	console.log('Building Typescript code')
-	call([
-		'tsc',
-		'-p',
-		'.'
-	].join(' '));
+	console.log("Building Typescript code");
+	call(["tsc", "-p", "."].join(" "));
 
 	// This option will search for JSX files within the project directory and
 	// call babel to transpile them.  This assumes that babel is available
@@ -216,148 +208,155 @@ if (argv.build) {
 			const promises = [];
 
 			for (let file of files) {
-				console.log(` -> ${file.path}`)
-				promises.push(pool.exec((file) => {
-					const ps = require('child_process');
-					try {
-						ps.execSync([
-							'babel',
-							file.path,
-							'-o',
-							file.path.slice(0, -1),
-							'--source-maps inline'
-						].join(' '), {stdio:[0,1,2]});
-					} catch (err) {
-						return `Error compiling file: ${file.path} -> ${err}`;
-					}
+				console.log(` -> ${file.path}`);
+				promises.push(
+					pool.exec(
+						(file) => {
+							const ps = require("child_process");
+							try {
+								ps.execSync(
+									[
+										"babel",
+										file.path,
+										"-o",
+										file.path.slice(0, -1),
+										"--source-maps inline"
+									].join(" "),
+									{stdio: [0, 1, 2]}
+								);
+							} catch (err) {
+								return `Error compiling file: ${
+									file.path
+								} -> ${err}`;
+							}
 
-					return `compiled: ${file.path}`
-				}, [file]));
+							return `compiled: ${file.path}`;
+						},
+						[file]
+					)
+				);
 			}
 
 			Promise.all(promises)
-				.then(results => {
-					console.log(`Compilation finished - ${results.length} files`);
+				.then((results) => {
+					console.log(
+						`Compilation finished - ${results.length} files`
+					);
 					pool.clear();
 				})
 				.then(() => {
 					if (argv.webpack) {
-						call('webpack');
+						call("webpack");
 					}
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.error(`Error in JSX compilation: ${err}`);
 				});
 		}
-    } else {
+	} else {
 		if (argv.webpack) {
-			call('webpack');
+			call("webpack");
 		}
 	}
 }
 
 if (argv.testing) {
-	let runner = 'mocha';
-	let options = ['--require intelli-espower-loader'];
-	let preprocessor = '';
+	let runner = "mocha";
+	let options = ["--require intelli-espower-loader"];
+	let preprocessor = "";
 
 	if (argv.ava) {
 		preprocessor = `nyc --temp-directory=${tmp}`;
-		runner = 'ava';
-		options = ['--verbose', argv.updateSnapshots ? '--update-snapshots' : ''];
+		runner = "ava";
+		options = [
+			"--verbose",
+			argv.updateSnapshots ? "--update-snapshots" : ""
+		];
 	}
 	if (argv.jest) {
-		runner = 'jest'
-		options = [argv.updateSnapshots ? '-u' : ''];
+		runner = "jest";
+		options = [argv.updateSnapshots ? "-u" : ""];
 	}
 
-	call([
-		preprocessor,
-		runner,
-		options.join(' ')
-	].join(' '));
+	call([preprocessor, runner, options.join(" ")].join(" "));
 }
 
 if (argv.lint) {
 	let files = {
 		include: [
-			'./lib/**/*.{ts,tsx}',
-			'./src/**/*.{ts,tsx}',
-			'./test/**/*.{ts,tsx}',
-			'./__tests__/**/*.{ts.tsx}',
-			'test*.{ts,tsx}',
-			'index.{ts,tsx}',
-			'cli.{ts,tsx}'
+			"./lib/**/*.{ts,tsx}",
+			"./src/**/*.{ts,tsx}",
+			"./test/**/*.{ts,tsx}",
+			"./__tests__/**/*.{ts.tsx}",
+			"test*.{ts,tsx}",
+			"index.{ts,tsx}",
+			"cli.{ts,tsx}"
 		],
-		exclude: [
-			'./**/*.d.ts'
-		]
+		exclude: ["./**/*.d.ts"]
 	};
 
-	if (pkg.hasOwnProperty('pkgwrap')) {
-		if (pkg.pkgwrap.hasOwnProperty('include') && pkg.pkgwrap.include instanceof Array) {
+	if (pkg.hasOwnProperty("pkgwrap")) {
+		if (
+			pkg.pkgwrap.hasOwnProperty("include") &&
+			pkg.pkgwrap.include instanceof Array
+		) {
 			files.include = _.union(files.include, pkg.pkgwrap.include);
 		}
 
-		if (pkg.pkgwrap.hasOwnProperty('exclude') && pkg.pkgwrap.exclude instanceof Array) {
+		if (
+			pkg.pkgwrap.hasOwnProperty("exclude") &&
+			pkg.pkgwrap.exclude instanceof Array
+		) {
 			files.exclude = _.union(files.exclude, pkg.pkgwrap.exclude);
 		}
 	}
 
-	let include = files.include.map((val) => {
-		return `"${val}"`;
-	}).join(' ');
+	let include = files.include
+		.map((val) => {
+			return `"${val}"`;
+		})
+		.join(" ");
 
-	let exclude = files.exclude.map((val) => {
-		return `--exclude "${val}"`;
-	}).join(' ');
+	let exclude = files.exclude
+		.map((val) => {
+			return `--exclude "${val}"`;
+		})
+		.join(" ");
 
-	call([
-		'tslint',
-		include,
-	    exclude
-	].join(' '));
+	call(["tslint", include, exclude].join(" "));
 }
 
 if (argv.reporting) {
-	call([
-		'nyc',
-		'report',
-		`--temp-directory=${tmp}`,
-		'--reporter=html'
-	].join(' '));
+	call(
+		["nyc", "report", `--temp-directory=${tmp}`, "--reporter=html"].join(
+			" "
+		)
+	);
 }
 
 if (argv.coverage) {
 	if (argv.jest) {
-		call([
-			'cat',
-			'./coverage/lcov.info',
-			'|',
-			'coveralls'
-		].join(' '));
+		call(["cat", "./coverage/lcov.info", "|", "coveralls"].join(" "));
 	} else {
-		call([
-			'nyc',
-			'report',
-			`--temp-directory=${tmp}`,
-			'--reporter=text-lcov',
-			'|',
-			'coveralls'
-
-		].join(' '));
+		call(
+			[
+				"nyc",
+				"report",
+				`--temp-directory=${tmp}`,
+				"--reporter=text-lcov",
+				"|",
+				"coveralls"
+			].join(" ")
+		);
 	}
 }
 
 if (argv.postinstall) {
-	let directories = [
-		'./coverage',
-		'./.nyc_output'
-	];
+	let directories = ["./coverage", "./.nyc_output"];
 
 	directories.forEach(function(directory) {
 		fs.mkdirsSync(directory);
-		if (process.platform !== 'win32') {
+		if (process.platform !== "win32") {
 			ps.execSync(`chmod 777 ${directory}`);
 		}
 	});
@@ -365,33 +364,33 @@ if (argv.postinstall) {
 
 if (argv.docs) {
 	const srcFiles = [
-		'./**/*.js',
-		'!gulpfile.js',
-		'!./**/*.test.js',
-		'!./build/**',
-		'!./coverage/**',
-		'!./demo/**',
-		'!./dist/**',
-		'!./docs/**',
-		'!./node_modules/**',
-		'!./packages/**',
-		'!./public/**',
-		'!./test/**',
-		'!./**/__test__/**',
-		'!./**/*.config.js'
+		"./**/*.js",
+		"!gulpfile.js",
+		"!./**/*.test.js",
+		"!./build/**",
+		"!./coverage/**",
+		"!./demo/**",
+		"!./dist/**",
+		"!./docs/**",
+		"!./node_modules/**",
+		"!./packages/**",
+		"!./public/**",
+		"!./test/**",
+		"!./**/__test__/**",
+		"!./**/*.config.js"
 	];
 	const files = globby.sync(srcFiles);
-	const docsDir = path.join(process.cwd(), 'docs');
+	const docsDir = path.join(process.cwd(), "docs");
 
 	if (!fs.existsSync(docsDir)) {
 		fs.mkdirsSync(docsDir);
 	}
 
 	if (files.length > 0) {
-		console.log('Creating markdown documentation files:');
+		console.log("Creating markdown documentation files:");
 	}
 
-	files.forEach(filename => {
+	files.forEach((filename) => {
 		let src = path.join(process.cwd(), filename);
 		let dst = path.join(docsDir, filename);
 
@@ -407,30 +406,30 @@ if (argv.docs) {
 			console.log(` -> Creating ${dst} from ${src}`);
 		}
 
-		call([
-			'jsdoc2md',
-			'-f',
-			src,
-			'>',
-			dst
-		].join(' '));
+		call(["jsdoc2md", "-f", src, ">", dst].join(" "));
 	});
 
 	if (argv.site) {
-		console.log('Generating JSDoc site');
-		call([
-			'jsdoc',
-			'-a all',
-			'-R ./README.md',
-			'-c ./node_modules/util.pkgwrap/jsdoc.conf',
-			files.map(filename => {return `${path.join(process.cwd(), filename)}`}).join(' ')
-		].join(' '));
+		console.log("Generating JSDoc site");
+		call(
+			[
+				"jsdoc",
+				"-a all",
+				"-R ./README.md",
+				"-c ./node_modules/util.pkgwrap/jsdoc.conf",
+				files
+					.map((filename) => {
+						return `${path.join(process.cwd(), filename)}`;
+					})
+					.join(" ")
+			].join(" ")
+		);
 	}
 }
 
 if (argv.globals) {
-	if (pkg.hasOwnProperty('globalDependencies')) {
-		let deps = pkg['globalDependencies'];
+	if (pkg.hasOwnProperty("globalDependencies")) {
+		let deps = pkg["globalDependencies"];
 		let globalPackages = [];
 
 		for (const packageName in deps) {
@@ -439,11 +438,6 @@ if (argv.globals) {
 			}
 		}
 
-		call ([
-			'yarn',
-			'global',
-			'add',
-			globalPackages.join(' ')
-		].join(' '));
+		call(["yarn", "global", "add", globalPackages.join(" ")].join(" "));
 	}
 }

@@ -1,45 +1,50 @@
 {
-  "name": "util.pkgwrap",
-  "version": "0.0.94",
-  "author": "jmquigley <jmquigley@outlook.com>",
-  "description": "A script wrapper for package.json scripts.",
-  "private": false,
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jmquigley/util.pkgwrap"
-  },
-  "bugs": {
-    "url": "https://github.com/jmquigley/util.pkgwrap/issues"
-  },
-  "engines": {
-    "node": ">=7.x"
-  },
-  "dependencies": {
-    "coveralls": "^3.0.2",
-    "cpx": "^1.5.0",
-    "cross-env": "^5.2.0",
-    "expand-home-dir": "github:jmquigley/expand-home-dir",
-    "fs-extra": "^7.0.1",
-    "globby": "^8.0.1",
-    "jsdoc": "^3.5.5",
-    "jsdoc-to-markdown": "^4.0.1",
-    "klaw-sync": "^6.0.0",
-    "lodash": "^4.17.11",
-    "nyc": "^13.1.0",
-    "rimraf": "^2.6.3",
-    "workerpool": "^3.0.0",
-    "yargs": "^12.0.5"
-  },
-  "bin": {
-    "pkgwrap": "./cli.js"
-  },
-  "pkgwrap": {
-    "include": [
-      "testinclude"
-    ],
-    "exclude": [
-      "testexclude"
-    ]
-  }
+	"name": "util.pkgwrap",
+	"version": "0.0.94",
+	"author": "jmquigley <jmquigley@outlook.com>",
+	"description": "A script wrapper for package.json scripts.",
+	"private": false,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jmquigley/util.pkgwrap"
+	},
+	"bugs": {
+		"url": "https://github.com/jmquigley/util.pkgwrap/issues"
+	},
+	"engines": {
+		"node": ">=7.x"
+	},
+	"dependencies": {
+		"coveralls": "^3.0.2",
+		"cpx": "^1.5.0",
+		"cross-env": "^5.2.0",
+		"expand-home-dir": "github:jmquigley/expand-home-dir",
+		"fs-extra": "^7.0.1",
+		"globby": "^9.0.0",
+		"jsdoc": "^3.5.5",
+		"jsdoc-to-markdown": "^4.0.1",
+		"klaw-sync": "^6.0.0",
+		"lodash": "^4.17.11",
+		"nyc": "^13.3.0",
+		"rimraf": "^2.6.3",
+		"workerpool": "^3.1.0",
+		"yargs": "^13.2.0"
+	},
+	"bin": {
+		"pkgwrap": "./cli.js"
+	},
+	"pkgwrap": {
+		"include": [
+			"testinclude"
+		],
+		"exclude": [
+			"testexclude"
+		]
+	},
+	"scripts": {
+		"all": "yarn install && yarn run prettier",
+		"clean:dist": "rimraf node_modules/ yarn.lock",
+		"prettier": "prettier --write \"**/*.{ts,tsx,js,json,yaml,yml,css}\""
+	}
 }
