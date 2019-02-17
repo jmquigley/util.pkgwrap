@@ -71,7 +71,7 @@ let argv = require("yargs")
 	.describe("updateSnapshots", "Updates testing snapshots in ava or jest")
 	.default("updateSnapshots", false)
 	.alias("updateSnapshots", "u")
-	.boolean('webpack')
+	.boolean("webpack")
 	.describe(
 		"webpack",
 		"used with --build to start a webpack build of the current soruce"
@@ -168,7 +168,17 @@ function cleanupJSXFilles(files) {
 
 if (argv.clean) {
 	let files = {
-		cleanup: ["dist", "build", "coverage", ".nyc_output", ".DS_Store"]
+		cleanup: [
+			"dist",
+			"build",
+			"coverage",
+			".nyc_output",
+			".DS_Store",
+			"index.d.ts",
+			"index.js",
+			"index.min.js",
+			"index.js.map"
+		]
 	};
 
 	if (pkg.hasOwnProperty("pkgwrap")) {
