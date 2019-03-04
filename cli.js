@@ -385,6 +385,7 @@ if (argv.postinstall) {
 if (argv.docs) {
 	const srcFiles = [
 		"./**/*.js",
+		"./**/*.jsx",
 		"!./**/*.min.js",
 		"!gulpfile.js",
 		"!./**/*.test.js",
