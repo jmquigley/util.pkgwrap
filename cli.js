@@ -428,7 +428,17 @@ if (argv.docs) {
 			console.log(` -> Creating ${dst} from ${src}`);
 		}
 
-		call(["jsdoc2md", "--param-list-format", "list", "-f", src, ">", dst].join(" "));
+		call(
+			[
+				"jsdoc2md",
+				"--param-list-format",
+				"list",
+				"-f",
+				src,
+				">",
+				dst
+			].join(" ")
+		);
 	});
 
 	if (argv.site) {
