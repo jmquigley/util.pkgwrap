@@ -2,7 +2,7 @@
 
 > A script wrapper for `package.json` scripts.
 
-[![build](https://travis-ci.org/jmquigley/util.pkgwrap.svg?branch=master)](https://travis-ci.org/jmquigley/util.pkgwrap)
+[![build](https://circleci.com/gh/jmquigley/util.pkgwrap/tree/master.svg?style=shield)](https://circleci.com/gh/jmquigley/util.pkgwrap/tree/master)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![NPM](https://img.shields.io/npm/v/util.pkgwrap.svg)](https://www.npmjs.com/package/util.pkgwrap)
 
