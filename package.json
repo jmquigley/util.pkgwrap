@@ -1,6 +1,6 @@
 {
 	"name": "util.pkgwrap",
-	"version": "0.0.104",
+	"version": "0.0.105",
 	"author": "jmquigley <jmquigley@outlook.com>",
 	"description": "A script wrapper for package.json scripts.",
 	"private": false,
@@ -45,8 +45,9 @@
 		]
 	},
 	"scripts": {
-		"all": "yarn install && yarn run prettier",
+		"all": "yarn install && yarn run prettier && yarn manifest",
 		"clean:dist": "rimraf node_modules/ yarn.lock",
+		"manifest": "npm pack --dry-run",
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,json,yaml,yml,css}\""
 	}
 }
