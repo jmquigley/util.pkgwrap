@@ -386,6 +386,9 @@ if (argv.docs) {
 	const srcFiles = [
 		"./**/*.js",
 		"./**/*.jsx",
+		"!./**/jest.config.js",
+		"!./**/jest.setup.js",
+		"!./**/webpack.config.js",
 		"!./**/*.min.js",
 		"!gulpfile.js",
 		"!./**/*.test.js",
@@ -398,8 +401,7 @@ if (argv.docs) {
 		"!./packages/**",
 		"!./public/**",
 		"!./test/**",
-		"!./**/__test__/**",
-		"!./**/*.config.js"
+		"!./**/__test__/**"
 	];
 	const files = globby.sync(srcFiles);
 	const docsDir = path.join(process.cwd(), "docs");
