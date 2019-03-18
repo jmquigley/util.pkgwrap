@@ -389,6 +389,7 @@ if (argv.docs) {
 		"!./**/jest.config.js",
 		"!./**/jest.setup.js",
 		"!./**/webpack.config.js",
+		"!./**/postcss.config.js",
 		"!./**/*.min.js",
 		"!gulpfile.js",
 		"!./**/*.test.js",
@@ -400,7 +401,7 @@ if (argv.docs) {
 		"!./node_modules/**",
 		"!./packages/**",
 		"!./public/**",
-		"!./test/**",
+		"!./**/test/**",
 		"!./**/__test__/**"
 	];
 	const files = globby.sync(srcFiles);
