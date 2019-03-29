@@ -177,6 +177,7 @@ if (argv.clean) {
 			"index.d.ts",
 			"index.js",
 			"index.min.js",
+			"index.cjs.min.js",
 			"index.es.min.js",
 			"index.umd.min.js",
 			"index.js.map"
