@@ -182,8 +182,7 @@ if (argv.clean) {
 			"index.cjs.min.js",
 			"index.es.min.js",
 			"index.umd.min.js",
-			".nyc_output",
-			"tsconfig.tsbuildinfo"
+			".nyc_output"
 		]
 	};
 
