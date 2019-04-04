@@ -171,16 +171,19 @@ if (argv.clean) {
 		cleanup: [
 			"dist",
 			"build",
+			"cli.d.ts",
+			"cli.js.map",
 			"coverage",
-			".nyc_output",
 			".DS_Store",
 			"index.d.ts",
 			"index.js",
+			"index.js.map",
 			"index.min.js",
 			"index.cjs.min.js",
 			"index.es.min.js",
 			"index.umd.min.js",
-			"index.js.map"
+			".nyc_output",
+			"tsconfig.tsbuildinfo"
 		]
 	};
 
