@@ -333,7 +333,7 @@ if (argv.lint) {
 		})
 		.join(" ");
 
-	call(["tslint", include]);
+	call(["tslint", include].join(" "));
 }
 
 if (argv.reporting) {
