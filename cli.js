@@ -307,15 +307,15 @@ if (argv.testing) {
 if (argv.lint) {
 	let files = {
 		include: [
+			"./demo/**/*.{ts,tsx}",
 			"./lib/**/*.{ts,tsx}",
 			"./src/**/*.{ts,tsx}",
 			"./test/**/*.{ts,tsx}",
 			"./__tests__/**/*.{ts.tsx}",
-			"test*.{ts,tsx}",
+			"./**/*.test*.{ts,tsx}",
 			"index.{ts,tsx}",
 			"cli.{ts,tsx}"
-		],
-		exclude: ["./**/*.d.ts"]
+		]
 	};
 
 	if (pkg.hasOwnProperty("pkgwrap")) {
@@ -325,13 +325,6 @@ if (argv.lint) {
 		) {
 			files.include = _.union(files.include, pkg.pkgwrap.include);
 		}
-
-		if (
-			pkg.pkgwrap.hasOwnProperty("exclude") &&
-			pkg.pkgwrap.exclude instanceof Array
-		) {
-			files.exclude = _.union(files.exclude, pkg.pkgwrap.exclude);
-		}
 	}
 
 	let include = files.include
@@ -340,13 +333,7 @@ if (argv.lint) {
 		})
 		.join(" ");
 
-	let exclude = files.exclude
-		.map((val) => {
-			return `--exclude "${val}"`;
-		})
-		.join(" ");
-
-	call(["tslint", include, exclude].join(" "));
+	call(["tslint", include]);
 }
 
 if (argv.reporting) {
