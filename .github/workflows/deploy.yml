@@ -1,0 +1,26 @@
+name: deploy
+
+on:
+    push:
+        tags:
+            - /^v\d+\.\d+\.\d+(-[\.\w]+)?/
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [8.x, 10.x, 12.x]
+
+        steps:
+            - uses: actions/checkout@master
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  version: ${{ matrix.node-version }}
+            - run: npm install -g yarn@1.19.2
+            - run: yarn all
+            - run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
