@@ -248,9 +248,7 @@ if (argv.build) {
 									{stdio: [0, 1, 2]}
 								);
 							} catch (err) {
-								return `Error compiling file: ${
-									file.path
-								} -> ${err}`;
+								return `Error compiling file: ${file.path} -> ${err}`;
 							}
 
 							return `compiled: ${file.path}`;
