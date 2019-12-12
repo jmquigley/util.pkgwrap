@@ -12,18 +12,21 @@
  *
  * The single options would include:
  *
- * - postinstall
  * - build
- * - lint
- * - testing
- * - reporting
  * - coverage
  * - clean
  * - globals
+ * - lint
+ * - postinstall
+ * - prettier
+ * - reporting
+ * - testing
  *
  */
 
 "use strict";
+
+const debug = require("debug")("util.pkgwrap.cli");
 
 const ps = require("child_process");
 const home = require("expand-home-dir");
@@ -38,15 +41,16 @@ const pkg = require(path.join(process.cwd(), "package.json"));
 
 let argv = require("yargs")
 	.usage("Usage: $0 <command> [options]")
-	.command("globals", "Installs all globalDependencies in package.json")
-	.command("clean", "Removes intermediate files from the module")
-	.command("docs", "Generates jsdoc and markdown documents for the project")
-	.command("postinstall", "Executed during the NPM post install")
 	.command("build", "Executes the typescript build command")
-	.command("lint", "Executes the lint tool to check for code errors")
-	.command("testing", "Start the testing process for the module")
-	.command("reporting", "Creates coverage reports after testing")
+	.command("clean", "Removes intermediate files from the module")
 	.command("coverage", "Creates nyc report data used by coveralls")
+	.command("docs", "Generates jsdoc and markdown documents for the project")
+	.command("globals", "Installs all globalDependencies in package.json")
+	.command("lint", "Executes the lint tool to check for code errors")
+	.command("postinstall", "Executed during the NPM post install")
+	.command("prettier", "Calls prettier to format source files")
+	.command("reporting", "Creates coverage reports after testing")
+	.command("testing", "Start the testing process for the module")
 	.boolean("ava")
 	.describe("ava", "Used with --testing to use the ava test runner")
 	.default("ava", false)
@@ -357,6 +361,36 @@ if (argv.coverage) {
 			].join(" ")
 		);
 	}
+}
+
+if (argv.prettier) {
+	let extensions = [
+		"ts",
+		"tsx",
+		"js",
+		"json",
+		"yaml",
+		"yml",
+		"css"
+	];
+
+	if (pkg.hasOwnProperty("pkgwrap")) {
+		if (pkg.pkgwrap.hasOwnProperty("prettier")) {
+			if (pkg.pkgwrap.prettier.hasOwnProperty("extensions")) {
+				extensions = _.union(extensions, pkg.pkgwrap.prettier.extensions);
+			}
+		}
+	}
+
+	extensions = `"**/*.{${extensions.join(",")}}"`
+
+	call([
+		"prettier",
+		"--ignore-path",
+		".gitignore",
+		"--write",
+		extensions,
+	].join(" "));
 }
 
 if (argv.postinstall) {

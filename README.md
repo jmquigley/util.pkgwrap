@@ -6,7 +6,7 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![NPM](https://img.shields.io/npm/v/util.pkgwrap.svg)](https://www.npmjs.com/package/util.pkgwrap)
 
-This creates a command line program named `pkgwrap` in `node_modules/.bin`.  It is used to wrap command line operations used when launching scripts from [NPM](https://github.com/npm/npm) or [Yarn](https://yarnpkg.com/en/).  The wrapper simplifies the setting of command line parameters for the programs below.  e.g. dynamically setting the temporary directory for nyc output or parallel building of JSX files.
+This creates a command line program named `pkgwrap` in `node_modules/.bin`.  It is used to wrap common/reusable command line operations for launching scripts in [NPM](https://github.com/npm/npm) or [Yarn](https://yarnpkg.com/en/) script.  The wrapper simplifies the setting of command line parameters for the programs below to create a set of opinionated options.  e.g. dynamically setting the temporary directory for nyc output or parallel building of JSX files or setting the default list of file extensions used by prettier.
 
 This implementation is opinionated and wraps the following packages:
 
@@ -15,6 +15,7 @@ This implementation is opinionated and wraps the following packages:
 - coverage: [coveralls](https://www.npmjs.com/package/coveralls)
 - docs: [jsdoc-to-markdown](https://www.npmjs.com/package/jsdoc-to-markdown) and [JSDoc](http://usejsdoc.org/index.html)
 - lint: [tslint](https://palantir.github.io/tslint/)
+- style: [prettier](https://prettier.io/)
 - reporting: [nyc](https://www.npmjs.com/package/nyc)
 - testing: [mocha](https://mochajs.org/) or [ava](https://github.com/avajs/ava) (if --ava used) or [jest](https://facebook.github.io/jest/) (if --jest used).  Most of the projects that use this module use ava for testing.
 
@@ -32,27 +33,30 @@ This module must be a regular dependency in a project and NOT a development one.
 This is a command line package used with the `scripts` section of `package.json`.  An example would be:
 
     "scripts": {
-	    "build": "pkgwrap --build --jsx",
-		"clean": "pkgwrap --clean",
+        "build": "pkgwrap --build --jsx",
+        "clean": "pkgwrap --clean",
         "coverage": "pkgwrap --coverage",
-		"docs": "pkgwrap --docs --site",
+        "docs": "pkgwrap --docs --site",
         "lint": "pkgwrap --lint",
         "postinstall": "pkgwrap --postinstall",
+        "prettier": "pkgwrap --prettier",
         "report": "pkgwrap --reporting",
         "test": "pkgwrap --testing --ava"
     }
 
 #### Commands
 
-- `--postinstall`: this is executed after `npm install`.  It is used to create directories or fix their permissions (for programs like nyc or coverage).
+
 - `--build`: calls the typescript build process
-- `--docs`: generates markdown and website documents for a module
-- `--lint`: calls the tslint code checking program
-- `--testing`: calls the testing program.  It uses mocha by default.  It can be overriden to use ava with an additonal `--ava` flag or `--jest`.
-- `--reporting`: runs nyc to create information that can be used in reporting testing coverage
-- `--coverage`: runs coveralls to upload report details after a successful build.
 - `--clean`: removes intermediate build/distribution files from the module.  This includes `dist`, `build`, `coverage`.
+- `--coverage`: runs coveralls to upload report details after a successful build.
+- `--docs`: generates markdown and website documents for a module
 - `--globals`: takes global dependencies from package.json ("globalDependencies") and installs them.  These follow the same conventions as dependencies/devDependencies.
+- `--lint`: calls the tslint code checking program
+- `--postinstall`: this is executed after `npm install`.  It is used to create directories or fix their permissions (for programs like nyc or coverage).
+- `--prettier`: calls the [prettier](https://prettier.io/) style formatter program to ensure all source files conform to an opinionated format.
+- `--reporting`: runs nyc to create information that can be used in reporting testing coverage
+- `--testing`: calls the testing program.  It uses mocha by default.  It can be overriden to use ava with an additonal `--ava` flag or `--jest`.
 
 #### Options
 
@@ -78,6 +82,7 @@ The following development dependencies must be included within the `package.json
 - [mocha](https://www.npmjs.com/package/mocha)
 - [nyc](https://www.npmjs.com/package/nyc)
 - [powerassert](https://www.npmjs.com/package/power-assert) (if using mocha)
+- [prettier](https://prettier.io/)
 - [rimraf](https://www.npmjs.com/package/rimraf)
 - [typescript](https://www.npmjs.com/package/typescript)
 - [tslint](https://www.npmjs.com/package/tslint)

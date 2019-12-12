@@ -1,6 +1,6 @@
 {
 	"name": "util.pkgwrap",
-	"version": "0.0.114",
+	"version": "0.0.115",
 	"author": "jmquigley <jmquigley@outlook.com>",
 	"description": "A script wrapper for package.json scripts.",
 	"private": false,
@@ -15,14 +15,17 @@
 	"engines": {
 		"node": ">=7.x"
 	},
+	"prettier": "@jmquigley/prettier-config",
 	"files": [
 		"cli.js",
 		"jsdoc.conf"
 	],
 	"dependencies": {
+		"@jmquigley/prettier-config": "^1.0.0",
 		"coveralls": "^3.0.9",
 		"cpx": "^1.5.0",
 		"cross-env": "^6.0.3",
+		"debug": "^4.1.1",
 		"expand-home-dir": "github:jmquigley/expand-home-dir",
 		"fs-extra": "^8.1.0",
 		"globby": "^10.0.1",
@@ -46,12 +49,17 @@
 		],
 		"exclude": [
 			"testexclude"
-		]
+		],
+		"prettier": {
+			"extensions": [
+				"xyz"
+			]
+		}
 	},
 	"scripts": {
 		"all": "yarn install && yarn run prettier && yarn manifest",
 		"clean:dist": "rimraf node_modules/ yarn.lock",
 		"manifest": "npm pack --dry-run",
-		"prettier": "prettier --write \"**/*.{ts,tsx,js,json,yaml,yml,css}\""
+		"prettier": "node cli.js --prettier"
 	}
 }
